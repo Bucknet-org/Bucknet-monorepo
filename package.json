@@ -1,0 +1,26 @@
+{
+  "name": "bucknet",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build --filter=extension",
+    "build:packages": "turbo run build --filter=./packages/*",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release-packages": "turbo run build --filter=./packages/* && changeset version && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "prettier": "^3.2.5",
+    "turbo": "^2.0.3",
+    "typescript": "^5.4.5"
+  },
+  "packageManager": "pnpm@8.15.6",
+  "engines": {
+    "node": ">=18"
+  }
+}

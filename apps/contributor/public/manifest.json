@@ -1,0 +1,63 @@
+{
+  "manifest_version": 3,
+  "name": "Contributor",
+  "short_name": "Contributor",
+  "description": "Bucknet Contributor Extension",
+  "version": "1.0.0",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "action": {
+    "default_icon": {
+      "16": "images/16.png",
+      "19": "images/19.png",
+      "32": "images/32.png",
+      "38": "images/38.png",
+      "64": "images/64.png",
+      "128": "images/128.png",
+      "512": "images/512.png"
+    },
+    "default_title": "Bucknet Contributor",
+    "default_popup": "index.html"
+  },
+  "icons": {
+    "16": "images/16.png",
+    "19": "images/19.png",
+    "32": "images/32.png",
+    "38": "images/38.png",
+    "64": "images/64.png",
+    "128": "images/128.png",
+    "512": "images/512.png"
+  },
+  "author": "Bucknet",
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "contentscript.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "inpage.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}

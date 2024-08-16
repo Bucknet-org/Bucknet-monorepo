@@ -1,0 +1,33 @@
+{
+  "name": "contributor",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next lint && next dev",
+    "build": "next build && yarn lint:build && yarn build:scripts",
+    "build:scripts": "yarn build:contentscript && yarn build:background && yarn build:inpage",
+    "start": "next start",
+    "build:contentscript": "npx browserify scripts/contentscript.js -o out/contentscript.js",
+    "build:background": "npx browserify scripts/background.js -o out/background.js",
+    "build:inpage": "npx browserify scripts/inpage.js -o out/inpage.js",
+    "lint:build": "mv ./out/_next ./out/next && cd ./out && grep -rli '_next' * | xargs -I@ sed -i '' 's|/_next|/next|g' @;",
+    "clean": "rm -rf node_modules out",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@bucknet/stream": "*",
+    "react": "^18",
+    "react-dom": "^18",
+    "next": "14.2.5"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5"
+  }
+}

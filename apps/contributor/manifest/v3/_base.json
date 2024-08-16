@@ -1,0 +1,75 @@
+{
+  "action": {
+    "default_icon": {
+      "16": "images/logo.png",
+      "19": "images/logo.png",
+      "32": "images/logo.png",
+      "38": "images/logo.png",
+      "64": "images/logo.png",
+      "128": "images/logo.png",
+      "512": "images/logo.png"
+    },
+    "default_title": "Contributor",
+    "default_popup": "index.html"
+  },
+  "author": "Bucknet",
+  "background": {
+    "scripts": [
+      "background.js",
+      "webextension-polyfill.js"
+    ]
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "windows": "Alt+Shift+M",
+        "mac": "Alt+Shift+M",
+        "chromeos": "Alt+Shift+M",
+        "linux": "Alt+Shift+M"
+      }
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["file://*/*", "http://*/*", "https://*/*"],
+      "js": [
+        "webextension-polyfill.js",
+        "background.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "default_locale": "en",
+  "host_permissions": [
+    "http://localhost:8545/",
+    "file://*/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "icons": {
+    "16": "images/logo.png",
+    "19": "images/logo.png",
+    "32": "images/logo.png",
+    "38": "images/logo.png",
+    "48": "images/logo.png",
+    "64": "images/logo.png",
+    "128": "images/logo.png",
+    "512": "images/logo.png"
+  },
+  "manifest_version": 3,
+  "name": "contributor",
+  "short_name": "contributor",
+  "description": "Bucknet Contributor",
+  "version": "1.0.0",
+  "permissions": [
+    "activeTab",
+    "alarms",
+    "clipboardWrite",
+    "notifications",
+    "scripting",
+    "storage",
+    "unlimitedStorage",
+    "webRequest"
+  ]
+}
