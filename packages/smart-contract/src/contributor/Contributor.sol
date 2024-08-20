@@ -18,7 +18,7 @@ contract Contributor is Context {
     }
 
     event EvalSessionOpened(uint256 epoch);
-    event EvelSessionClosed(uint256 epoch);
+    event EvalSessionClosed(uint256 epoch);
     event Evaluated(address evaluator, uint256 epoch);
 
     uint256 constant public DENOMINATOR = 10_000;
@@ -96,9 +96,9 @@ contract Contributor is Context {
                 finalizePts = 0;
                 penalty[evaluator] -= avgPts;
             }
-            contribPts[manager.getRoleMember(Roles.CONTRIBUTOR_ROLE, i)] = finalizePts;
+            contribPts[manager.getRoleMember(Roles.CONTRIBUTOR_ROLE, i)] += finalizePts;
         }
 
-        emit EvelSessionClosed(epoch_);
+        emit EvalSessionClosed(epoch_);
     }
 }
