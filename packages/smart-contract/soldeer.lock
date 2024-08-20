@@ -1,0 +1,12 @@
+
+[[dependencies]]
+name = "forge-std"
+version = "1.9.1"
+source = "https://github.com/foundry-rs/forge-std/archive/refs/tags/v1.9.1.zip"
+checksum = "67e3523bb8bf3b085c8f28257c7c57e4b0e36eab99272437f89b408653803bb6"
+
+[[dependencies]]
+name = "foundry-kit"
+version = "1.0.0"
+source = "https://github.com/cgccld/foundry-kit/archive/refs/tags/v.1.0.0.zip"
+checksum = "1801110bd62ee4eff97070961b68971219d19ddd88c2659ed777c5c2d3582c5f"
