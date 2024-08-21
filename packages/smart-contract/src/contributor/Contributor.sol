@@ -40,6 +40,10 @@ contract Contributor is Context {
         _;
     }
 
+    function checkPoints() external view returns (uint256) {
+        return contribPts[_msgSender()];
+    }
+
     function openEvalSession(bytes32 poe_) external onlyRole(manager.DEFAULT_ADMIN_ROLE()) {
         if (epoch != 0) {
             _closeEvalSession(epoch);
@@ -60,7 +64,6 @@ contract Contributor is Context {
 
         Evaluation storage eval = evaluations[epoch];
 
-        require(block.timestamp > eval.closeAt, "session closed");
         require(!eval.evaluators.contains(_msgSender()), "already evaluated");
 
         for (uint256 i; i < len; ++i) {
@@ -76,7 +79,7 @@ contract Contributor is Context {
         Evaluation storage eval = evaluations[epoch_];
 
         address evaluator;
-
+        
         for (uint256 i; i < evaluators.length; ++i) {
             evaluator = evaluators[i];
             if (!eval.evaluators.contains(evaluator)) {
@@ -98,6 +101,8 @@ contract Contributor is Context {
             }
             contribPts[manager.getRoleMember(Roles.CONTRIBUTOR_ROLE, i)] += finalizePts;
         }
+
+        eval.closeAt = block.timestamp;
 
         emit EvalSessionClosed(epoch_);
     }
