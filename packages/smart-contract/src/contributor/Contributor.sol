@@ -12,7 +12,7 @@ contract Contributor is Context {
     struct Evaluation {
         bytes32 poe;
         uint128 openAt;
-        uint256 closeAt;
+        uint128 closeAt;
         EnumerableSet.AddressSet evaluators;
         mapping(uint256 slot => uint256) score;
     }
@@ -23,7 +23,6 @@ contract Contributor is Context {
 
     uint256 constant public DENOMINATOR = 10_000;
     uint256 constant public PENALTY_POINTS = 10_000;
-    
 
     uint256 public epoch;
     AccessManagerV2 public manager;
@@ -56,22 +55,22 @@ contract Contributor is Context {
         emit EvalSessionOpened(epoch);
     }
 
-    function evaluate(uint256[] calldata slot_, uint256[] calldata points_) external onlyRole(Roles.CONTRIBUTOR_ROLE) {
-        uint256 len = slot_.length;
-        require(len == points_.length, "length mismatch");
+    function evaluate(uint256[] calldata points_) external onlyRole(Roles.CONTRIBUTOR_ROLE) {
+        uint256 len = points_.length;
+        address sender = _msgSender();
         // consider
         require(len == manager.getRoleMemberCount(Roles.CONTRIBUTOR_ROLE), "must evaluate all");
 
         Evaluation storage eval = evaluations[epoch];
 
-        require(!eval.evaluators.contains(_msgSender()), "already evaluated");
+        require(!eval.evaluators.contains(sender), "already evaluated");
 
         for (uint256 i; i < len; ++i) {
-            eval.score[slot_[i]] += points_[i];
+            eval.score[i] += points_[i];
         }
-        eval.evaluators.add(_msgSender());
+        eval.evaluators.add(sender);
 
-        emit Evaluated(_msgSender(), epoch);
+        emit Evaluated(sender, epoch);
     }
 
     function _closeEvalSession(uint256 epoch_) internal {
@@ -102,7 +101,7 @@ contract Contributor is Context {
             contribPts[manager.getRoleMember(Roles.CONTRIBUTOR_ROLE, i)] += finalizePts;
         }
 
-        eval.closeAt = block.timestamp;
+        eval.closeAt = uint128(block.timestamp);
 
         emit EvalSessionClosed(epoch_);
     }
