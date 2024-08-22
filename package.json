@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "turbo run build --filter=extension",
+    "build": "turbo run build --filter=contributor",
     "build:packages": "turbo run build --filter=./packages/*",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --filter=contributor",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

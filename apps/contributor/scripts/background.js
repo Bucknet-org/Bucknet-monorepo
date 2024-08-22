@@ -74,7 +74,7 @@ const sendReadyMessageToTabs = async () => {
 
 browser.runtime.onInstalled.addListener(({ reason }) => {
   if (reason === 'install' || reason === 'update') {
-    const extensionURL = platform.getExtensionURL('browser');
+    const extensionURL = platform.getExtensionURL('index');
     platform.openTab({ url: extensionURL })
   }
 })
