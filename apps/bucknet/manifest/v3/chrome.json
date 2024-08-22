@@ -1,0 +1,9 @@
+{
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; frame-ancestors 'none';"
+  },
+  "externally_connectable": {
+    "ids": ["*"]
+  },
+  "minimum_chrome_version": "88"
+}
