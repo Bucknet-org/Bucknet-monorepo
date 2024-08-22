@@ -7,6 +7,9 @@ importers:
       '@changesets/cli':
         specifier: ^2.27.1
         version: 2.27.1
+      eslint:
+        specifier: ^8
+        version: 8.57.0
       prettier:
         specifier: ^3.2.5
         version: 3.2.5
@@ -19,6 +22,9 @@ importers:
 
   apps/contributor:
     dependencies:
+      '@bucknet/stream':
+        specifier: '*'
+        version: link:../../packages/stream
       next:
         specifier: 14.2.5
         version: 14.2.5(react-dom@18.0.0)(react@18.0.0)
@@ -44,6 +50,9 @@ importers:
       eslint-config-next:
         specifier: 14.2.5
         version: 14.2.5(eslint@8.0.0)(typescript@5.4.5)
+      eslint-plugin-lodash:
+        specifier: ^8.0.0
+        version: 8.0.0(eslint@8.0.0)
       postcss:
         specifier: ^8
         version: 8.0.0
@@ -3024,6 +3033,16 @@ packages:
       object.fromentries: 2.0.8
       safe-regex-test: 1.0.3
       string.prototype.includes: 2.0.0
+    dev: true
+
+  /eslint-plugin-lodash@8.0.0(eslint@8.0.0):
+    resolution: {integrity: sha512-7DA8485FolmWRzh+8t4S8Pzin2TTuWfb0ZW3j/2fYElgk82ZanFz8vDcvc4BBPceYdX1p/za+tkbO68maDBGGw==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      eslint: '>=9.0.0'
+    dependencies:
+      eslint: 8.0.0
+      lodash: 4.17.21
     dev: true
 
   /eslint-plugin-markdown@3.0.1(eslint@8.57.0):
