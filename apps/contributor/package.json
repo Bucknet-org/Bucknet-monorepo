@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@bucknet/stream": "*",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^5.16.7",
     "extension-port-stream": "^4.2.0",
     "loglevel": "^1.9.1",
     "next": "14.2.5",

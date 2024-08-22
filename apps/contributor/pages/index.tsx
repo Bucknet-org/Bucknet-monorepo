@@ -1,5 +1,8 @@
-export default function Index() {
+import React, { memo } from 'react'
+import Home from './home'
+
+export default memo(function Index() {
   return (
-    <div>Extension Home</div>
-  );
-}
+    <Home />
+  )
+})
