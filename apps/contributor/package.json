@@ -18,6 +18,7 @@
     "@bucknet/stream": "*",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^5.16.7",
+    "@rainbow-me/rainbowkit": "^2.1.5",
     "@tanstack/react-query": "^5.52.1",
     "extension-port-stream": "^4.2.0",
     "loglevel": "^1.9.1",

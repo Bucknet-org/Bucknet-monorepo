@@ -24,3 +24,18 @@ export const BoxFlex = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   gap: '10px',
 }))
+
+export const WrapperHeader = styled(Box)(({}) => ({
+  position: 'sticky',
+  top: 0,
+  left: 0,
+  zIndex: '100',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingBottom: '15px',
+  paddingTop: '15px',
+  paddingLeft: '16px!important',
+  paddingRight: '16px!important',
+  borderBottom: '1px solid #E7E8EC',
+}))
