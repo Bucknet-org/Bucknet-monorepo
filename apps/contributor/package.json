@@ -18,11 +18,14 @@
     "@bucknet/stream": "*",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^5.16.7",
+    "@tanstack/react-query": "^5.52.1",
     "extension-port-stream": "^4.2.0",
     "loglevel": "^1.9.1",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
+    "viem": "2.x",
+    "wagmi": "^2.12.7",
     "webextension-polyfill": "^0.12.0"
   },
   "devDependencies": {
