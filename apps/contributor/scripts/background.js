@@ -4,13 +4,15 @@ import { checkForLastErrorAndLog } from './check-last-error'
 import EventEmitter from 'events'
 import ExtensionPlatform from './extension'
 import { MessageMethod } from './constant'
+import { MetaMaskInpageProvider } from '@metamask/providers'
+import PortStream from "extension-port-stream"
 
 const platform = new ExtensionPlatform()
 
 const statePersistenceEvents = new EventEmitter()
 
 function setupController(initState) {
-  controller = new Controller({ initState, localStore })
+  controller = new Controller({ initState })
   statePersistenceEvents.emit('initial-state', initState)
 }
 
@@ -110,29 +112,55 @@ self.addEventListener('message', async (event) => {
       {
         method: MessageMethod.INITIALIZE_DATA,
         data: JSON.stringify(initState),
-      },
-      clientId,
+      }
     )
   } else if (data.method === MessageMethod.SET_INITIALIZE_DATA) {
-    sendMessage(
-      {
-        data: 'success',
-      },
-      clientId,
-    )
+    sendMessage({ data: 'success' })
     await browser.storage.local.set(JSON.parse(data.data))
   } else if (data.method === MessageMethod.EXPAND_VIEW) {
     const url = platform.getExtensionURL(JSON.parse(data.data).route);
     platform.openTab({ url });
+  } else if (data.method === MessageMethod.CONNECT) {
+    let provider
+    try {
+      let currentMetaMaskId = getMetaMaskId()
+      console.log('metamask id', currentMetaMaskId)
+      const metamaskPort = browser.runtime.connect(currentMetaMaskId)
+      const pluginStream = new PortStream(metamaskPort)
+      console.log('pluginStream', pluginStream)
+      provider = new MetaMaskInpageProvider(pluginStream)
+      console.log('metamask provider', provider)
+      await provider.request({
+        method: 'eth_requestAccounts',
+      })
+    } catch (e) {
+      console.debug(`Metamask connect error `, e)
+      throw e
+    }
+    sendMessage({ provider: provider })
   }
 })
-const sendMessage = async (msg, clientId) => {
-  let allClients = []
-  let client = await clients.get(clientId)
-  allClients.push(client)
-  allClients.map((client) => {
-    return client.postMessage(msg)
-  })
+const sendMessage = async (data) => {
+  let currentTab = platform.currentTab()
+  browser.tabs
+    .sendMessage(currentTab.id, data)
+    .then(() => {
+      checkForLastErrorAndLog()
+    })
+    .catch(() => {
+      // An error may happen if the contentscript is blocked from loading,
+      // and thus there is no runtime.onMessage handler to listen to the message.
+      checkForLastErrorAndLog()
+    })
+}
+
+function getMetaMaskId () {
+  switch (browser && browser.name) {
+    case 'chrome':
+      return 'nkbihfbeogaeaoehlefnkodbefgpgknn'
+    default:
+      return 'nkbihfbeogaeaoehlefnkodbefgpgknn'
+  }
 }
 
 initBackground()

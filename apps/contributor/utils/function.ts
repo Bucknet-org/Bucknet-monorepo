@@ -10,3 +10,13 @@ export const expandView = (route: string = 'browser/home') => {
     )
   })
 }
+
+export const connectMetamask = () => {
+  navigator.serviceWorker.ready.then((registration) => {
+    registration?.active?.postMessage(
+      JSON.stringify({
+        method: MESSAGE.CONNECT,
+      }),
+    )
+  })
+}

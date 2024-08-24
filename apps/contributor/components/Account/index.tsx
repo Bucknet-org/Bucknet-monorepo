@@ -1,3 +1,4 @@
+import { Box } from '@mui/material'
 import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
 
 export function Account() {
@@ -7,10 +8,10 @@ export function Account() {
   const { data: ensAvatar } = useEnsAvatar({ name: ensName! })
 
   return (
-    <div>
+    <Box>
       {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
-      {address && <div>{ensName ? `${ensName} (${address})` : address}</div>}
+      {address && <Box>{ensName ? `${ensName} (${address})` : address}</Box>}
       <button onClick={() => disconnect()}>Disconnect</button>
-    </div>
+    </Box>
   )
 }

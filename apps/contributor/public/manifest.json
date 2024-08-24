@@ -6,7 +6,8 @@
   "version": "1.0.0",
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "management"
   ],
   "action": {
     "default_icon": {

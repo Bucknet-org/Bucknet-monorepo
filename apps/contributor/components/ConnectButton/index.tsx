@@ -1,10 +1,12 @@
+import { BoxFlex } from '@/pages/styled';
+import { Box, Typography } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 
 const Connect: NextPage = () => {
   return (
-    <div
+    <Box
       style={{
         display: 'flex',
         justifyContent: 'flex-end',
@@ -21,7 +23,7 @@ const Connect: NextPage = () => {
           mounted,
         }) => {
           return (
-            <div
+            <Box
               {...(!mounted && {
                 'aria-hidden': true,
                 'style': {
@@ -49,14 +51,14 @@ const Connect: NextPage = () => {
                 }
 
                 return (
-                  <div style={{ display: 'flex', gap: 12 }}>
+                  <Box style={{ display: 'flex', gap: 12 }}>
                     <button
                       onClick={openChainModal}
                       style={{ display: 'flex', alignItems: 'center' }}
                       type="button"
                     >
                       {chain.hasIcon && (
-                        <div
+                        <Box
                           style={{
                             background: chain.iconBackground,
                             width: 12,
@@ -74,7 +76,7 @@ const Connect: NextPage = () => {
                               height={12}
                             />
                           )}
-                        </div>
+                        </Box>
                       )}
                       {chain.name}
                     </button>
@@ -85,14 +87,14 @@ const Connect: NextPage = () => {
                         ? ` (${account.displayBalance})`
                         : ''}
                     </button>
-                  </div>
+                  </Box>
                 );
               })()}
-            </div>
+            </Box>
           );
         }}
       </ConnectButton.Custom>
-    </div>
+    </Box>
   );
 };
 
