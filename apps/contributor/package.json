@@ -21,6 +21,8 @@
     "@mui/material": "^5.16.7",
     "@rainbow-me/rainbowkit": "^2.1.5",
     "@tanstack/react-query": "^5.52.1",
+    "@web3modal/ethers": "^5.1.3",
+    "ethers": "^6.13.2",
     "extension-port-stream": "^4.2.0",
     "loglevel": "^1.9.1",
     "metamask-extension-provider": "^5.0.0",

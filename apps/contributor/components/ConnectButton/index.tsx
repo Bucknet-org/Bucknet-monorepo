@@ -1,101 +1,12 @@
-import { BoxFlex } from '@/pages/styled';
-import { Box, Typography } from '@mui/material';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import type { NextPage } from 'next';
-import Image from 'next/image';
+import { useWeb3Modal } from '@web3modal/ethers/react'
 
-const Connect: NextPage = () => {
+export default function ConnectButton() {
+  const { open } = useWeb3Modal()
+
   return (
-    <Box
-      style={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        padding: 12,
-      }}
-    >
-      <ConnectButton.Custom>
-        {({
-          account,
-          chain,
-          openAccountModal,
-          openChainModal,
-          openConnectModal,
-          mounted,
-        }) => {
-          return (
-            <Box
-              {...(!mounted && {
-                'aria-hidden': true,
-                'style': {
-                  opacity: 0,
-                  pointerEvents: 'none',
-                  userSelect: 'none',
-                },
-              })}
-            >
-              {(() => {
-                if (!mounted || !account || !chain) {
-                  return (
-                    <button onClick={openConnectModal} type="button">
-                      Connect Wallet
-                    </button>
-                  );
-                }
-
-                if (chain.unsupported) {
-                  return (
-                    <button onClick={openChainModal} type="button">
-                      Wrong network
-                    </button>
-                  );
-                }
-
-                return (
-                  <Box style={{ display: 'flex', gap: 12 }}>
-                    <button
-                      onClick={openChainModal}
-                      style={{ display: 'flex', alignItems: 'center' }}
-                      type="button"
-                    >
-                      {chain.hasIcon && (
-                        <Box
-                          style={{
-                            background: chain.iconBackground,
-                            width: 12,
-                            height: 12,
-                            borderRadius: 999,
-                            overflow: 'hidden',
-                            marginRight: 4,
-                          }}
-                        >
-                          {chain.iconUrl && (
-                            <Image
-                              alt={chain.name ?? 'Chain icon'}
-                              src={chain.iconUrl}
-                              width={12}
-                              height={12}
-                            />
-                          )}
-                        </Box>
-                      )}
-                      {chain.name}
-                    </button>
-
-                    <button onClick={openAccountModal} type="button">
-                      {account.displayName}
-                      {account.displayBalance
-                        ? ` (${account.displayBalance})`
-                        : ''}
-                    </button>
-                  </Box>
-                );
-              })()}
-            </Box>
-          );
-        }}
-      </ConnectButton.Custom>
-    </Box>
-  );
-};
-
-export default Connect;
+    <>
+      <button onClick={() => open()}>Open Connect Modal</button>
+      <button onClick={() => open({ view: 'Networks' })}>Open Network Modal</button>
+    </>
+  )
+}
