@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useWallet } from '@/context/WalletProvider'
 
-export const Wallet = () => {
+export const Connect = () => {
   const [openModal, setOpenModal] = useState(false)
   const { login, loggedIn, logout, address } = useWallet()
 
