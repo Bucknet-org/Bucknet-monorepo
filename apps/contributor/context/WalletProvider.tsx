@@ -3,6 +3,7 @@
 import { useContext, useEffect, useState, createContext } from 'react'
 import createMetaMaskProvider from 'metamask-extension-provider';
 import { ChainId } from '@/constants/chainid'
+import { EthereumEvents } from '@/constants/events';
 
 interface IWalletContext {
     provider: any | null
@@ -14,7 +15,6 @@ interface IWalletContext {
     getAccounts: () => Promise<string[] | undefined>
     getBalance: () => Promise<string | undefined>
     signMessage: () => Promise<void>
-    getUserInfo: () => Promise<void>
 }
 
 export const WalletContext = createContext<IWalletContext>({
@@ -27,7 +27,6 @@ export const WalletContext = createContext<IWalletContext>({
     getAccounts: async () => [],
     getBalance: async () => '0',
     signMessage: async () => { },
-    getUserInfo: async () => { },
 })
 
 export function useWallet() {
@@ -41,22 +40,32 @@ export function WalletProvider({ children }: { children: any }) {
     const [chainId, setChainId] = useState<ChainId | null>(null)
 
     useEffect(() => {
-        // Check if MetaMask is installed
         if (window.ethereum) {
             setProvider(window.ethereum)
-            window.ethereum.on('accountsChanged', handleAccountsChanged)
-            window.ethereum.on('chainChanged', handleChainChanged)
         } else {
             const provider = createMetaMaskProvider()
             setProvider(provider)
         }
     }, [])
 
+    useEffect(() => {
+        if (provider?.isConnected) {
+            provider.request({ method: 'eth_accounts' }).then(handleAccountsChanged).catch(console.error)
+            provider.on(EthereumEvents.CHAIN_CHANGED, handleChainChanged);
+
+            return () => {
+                provider.removeListener(EthereumEvents.CHAIN_CHANGED, handleChainChanged);
+            };
+        }
+    }, [provider])
+
     const handleAccountsChanged = (accounts: string[]) => {
         if (accounts.length > 0) {
             setAddress(accounts[0])
+            setLoggedIn(true)
         } else {
             setAddress('')
+            setLoggedIn(false)
         }
     }
 
@@ -71,10 +80,7 @@ export function WalletProvider({ children }: { children: any }) {
         }
         try {
             const accounts = await provider.request({ method: 'eth_requestAccounts' })
-            if (accounts.length > 0) {
-                setLoggedIn(true)
-                setAddress(accounts[0])
-            }
+            handleAccountsChanged(accounts)
         } catch (error) {
             console.error(error)
         }
@@ -83,7 +89,7 @@ export function WalletProvider({ children }: { children: any }) {
     const logout = async () => {
         setLoggedIn(false)
         setAddress('')
-        console.log('logged out')
+        await provider.request({ method: 'wallet_revokePermissions', params: [{"eth_accounts": {}}]})
     }
 
     const getAccounts = async () => {
@@ -131,15 +137,6 @@ export function WalletProvider({ children }: { children: any }) {
         }
     }
 
-    const getUserInfo = async () => {
-        if (!provider || !address) {
-            console.error('MetaMask provider or address not available')
-            return
-        }
-        // MetaMask does not provide user info directly, you may need to use third-party services or APIs
-        console.log('User info is not directly accessible via MetaMask')
-    }
-
     const contextProvider = {
         provider,
         loggedIn,
@@ -150,7 +147,6 @@ export function WalletProvider({ children }: { children: any }) {
         getAccounts,
         getBalance,
         signMessage,
-        getUserInfo,
     }
 
     return <WalletContext.Provider value={contextProvider}>{children}</WalletContext.Provider>
