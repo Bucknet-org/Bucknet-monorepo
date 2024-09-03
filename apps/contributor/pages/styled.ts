@@ -1,3 +1,4 @@
+import { AppColors } from '@/constants/assets_app/app_theme'
 import { STYLE } from '@/constants/style'
 import { styled, Box } from '@mui/material'
 
@@ -15,6 +16,7 @@ export const AppWarpperExtension = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   overflow: 'hidden',
   boxShadow: '0px 4px 24px 0px #00000026',
+  background: AppColors.background,
 }))
 
 export const BoxFlex = styled(Box)(({ theme }) => ({

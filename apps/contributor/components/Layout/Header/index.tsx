@@ -5,7 +5,7 @@ import { Connect } from "@/components/ConnectButton"
 export default memo(function Header() {
   return (
     <WrapperHeader>
-      <Connect />
+      {/* <Connect /> */}
     </WrapperHeader>
   )
 })

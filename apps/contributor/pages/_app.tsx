@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <WalletProvider>
-      <Header/>
+      {/* <Header/> */}
       <Component {...pageProps} />
     </WalletProvider>
   );
