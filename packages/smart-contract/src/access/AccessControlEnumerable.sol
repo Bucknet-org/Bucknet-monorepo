@@ -39,6 +39,13 @@ abstract contract AccessControlEnumerable is IAccessControlEnumerable, AccessCon
     }
 
     /**
+     * @dev Returns all accounts that have `role`. 
+     */
+    function getAllRoleMember(bytes32 role) public view virtual returns (address[] memory) {
+        return _roleMembers[role].values();
+    }
+
+    /**
      * @dev Returns the number of accounts that have `role`. Can be used
      * together with {getRoleMember} to enumerate all bearers of a role.
      */

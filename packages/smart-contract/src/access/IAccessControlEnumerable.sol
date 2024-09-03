@@ -23,6 +23,8 @@ interface IAccessControlEnumerable is IAccessControl {
      */
     function getRoleMember(bytes32 role, uint256 index) external view returns (address);
 
+    function getAllRoleMember(bytes32 role) external view returns (address[] memory);
+
     /**
      * @dev Returns the number of accounts that have `role`. Can be used
      * together with {getRoleMember} to enumerate all bearers of a role.
