@@ -21,14 +21,15 @@ contract Contributor is Context {
     event EvalSessionClosed(uint256 epoch);
     event Evaluated(address evaluator, uint256 epoch);
 
-    uint256 constant public DENOMINATOR = 10_000;
-    uint256 constant public PENALTY_POINTS = 5_000;
+    uint256 constant public DENOMINATOR = 10_000; 
+    uint256 constant public PENALTY_POINTS = 50_000; 
 
     uint256 public epoch;
     AccessManagerV2 public manager;
     mapping(address => uint256) private penalty;
     mapping(address => uint256) private contribPts;
     mapping(uint256 => Evaluation) private evaluations;
+    mapping(address => mapping(uint256 => uint256)) private avgPoints;
 
     constructor(address manager_) {
         manager = AccessManagerV2(manager_);
@@ -39,8 +40,16 @@ contract Contributor is Context {
         _;
     }
 
-    function checkPoints() external view returns (uint256) {
+    function getPoints() external view returns (uint256) {
         return contribPts[_msgSender()];
+    }
+
+    function getPenaltyPoints() external view returns (uint256) {
+        return penalty[_msgSender()];
+    }
+
+    function getEpochPoints(uint256 epoch_) external view returns (uint256) {
+        return avgPoints[_msgSender()][epoch_];
     }
 
     function openEvalSession(bytes32 poe_) external onlyRole(manager.DEFAULT_ADMIN_ROLE()) {
@@ -98,6 +107,7 @@ contract Contributor is Context {
                 penalty[evaluator] -= avgPts;
             }
             contribPts[manager.getRoleMember(Roles.CONTRIBUTOR_ROLE, i)] += finalizePts;
+            avgPoints[evaluator][epoch_] = finalizePts;
         }
 
         eval.closeAt = uint128(block.timestamp);
