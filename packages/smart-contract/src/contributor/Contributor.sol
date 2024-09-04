@@ -22,7 +22,7 @@ contract Contributor is Context {
     event Evaluated(address evaluator, uint256 epoch);
 
     uint256 constant public DENOMINATOR = 10_000;
-    uint256 constant public PENALTY_POINTS = 10_000;
+    uint256 constant public PENALTY_POINTS = 5_000;
 
     uint256 public epoch;
     AccessManagerV2 public manager;
@@ -58,7 +58,6 @@ contract Contributor is Context {
     function evaluate(uint256[] calldata points_) external onlyRole(Roles.CONTRIBUTOR_ROLE) {
         uint256 len = points_.length;
         address sender = _msgSender();
-        // consider
         require(len == manager.getRoleMemberCount(Roles.CONTRIBUTOR_ROLE), "must evaluate all");
 
         Evaluation storage eval = evaluations[epoch];
