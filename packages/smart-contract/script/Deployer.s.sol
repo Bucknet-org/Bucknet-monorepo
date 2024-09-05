@@ -14,13 +14,13 @@ contract Deployer is BaseMigrate {
 
     function deploy() public broadcast {
         AccessManagerV2 manager = AccessManagerV2(deployContract('AccessManagerV2.sol:AccessManagerV2', abi.encode()));
-        manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 0 address
-        manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 1 address
-        manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 2 address
-        manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 3 address
-        manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 4 address
-        manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 5 address
-        manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 6 address
+        // manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 0 address
+        // manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 1 address
+        // manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 2 address
+        // manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 3 address
+        // manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 4 address
+        // manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 5 address
+        // manager.grantRole(Roles.CONTRIBUTOR_ROLE, 0xB18922995ddE6C185430EfC9DCb79ba86D888Dba); // slot 6 address
 
         deployContract('Contributor.sol:Contributor', abi.encode(address(manager)));
     }
