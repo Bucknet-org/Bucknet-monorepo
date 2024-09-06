@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const getWVS = async () => {
       let res = await githubApi.wvs(1);
-      console.log('wvs', res)
+      console.log('wvs', res.data)
     }
 
     getWVS()

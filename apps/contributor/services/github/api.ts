@@ -23,7 +23,7 @@ async function requestRetry(route: any, parameters: any) {
 
 const githubApi = {
   wvs(epoch: number): Promise<any> {
-    const path = `packages/WVS/src/wvs/${epoch}.json`
+    const path = `packages/wvs/src/wvs/${epoch}.json`
     console.log('path', path)
     return requestRetry(
       'GET /repos/{owner}/{repo}/contents/{path}',
@@ -31,6 +31,10 @@ const githubApi = {
         owner: 'Bekh-nam',
         repo: 'Bucknet',
         path: path,
+        mediaType: {
+          format: "raw",
+        },
+        ref: 'feat/wvs',
         branch: 'feat/wvs',
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
