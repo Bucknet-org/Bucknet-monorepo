@@ -1,6 +1,7 @@
 import Header from "@/components/Layout/Header";
 import { MESSAGE } from "@/constants/message";
 import { WalletProvider } from "@/context/WalletProvider";
+import githubApi from "@/services/github/api";
 import { updateProvider } from "@/store/actions/app.action";
 import configureStore from "@/store/store";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -15,6 +16,15 @@ interface AppProps {
 
 export default function App({ Component, pageProps }: AppProps) {
   const [initState, setInitState] = useState<any>()
+
+  useEffect(() => {
+    const getWVS = async () => {
+      let res = await githubApi.wvs(1);
+      console.log('wvs', res)
+    }
+
+    getWVS()
+  }, [])
 
   const store = useMemo(() => {
     console.log('initState', initState)
