@@ -47,21 +47,6 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
 
   useEffect(() => {
-    const getProviderFromBackgroud = (event: any) => {
-      console.log('event', event)
-      const data = event.data
-      if (data.method === MESSAGE.UPDATE_PROVIDER) {
-        console.log('provider', data.data)
-        store.dispatch(updateProvider(data.data))
-      }
-    }
-    navigator.serviceWorker.addEventListener('message', getProviderFromBackgroud)
-    return () => {
-      navigator.serviceWorker.removeEventListener('message', getProviderFromBackgroud)
-    }
-  }, [])
-
-  useEffect(() => {
     const handleTabClose = () => {
       sendMessage({
         method: MESSAGE.SET_INITIALIZE_DATA,
@@ -75,12 +60,12 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [store, sendMessage])
 
   return (
-    // <WalletProvider>
+    <WalletProvider>
       <Provider store={store}>
         {/* <Header/> */}
         <Component {...pageProps} />
       </Provider>
-    // </WalletProvider>
+    </WalletProvider>
   );
 }
 

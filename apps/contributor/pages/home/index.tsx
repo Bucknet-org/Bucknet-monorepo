@@ -16,7 +16,7 @@ export default memo(function Home() {
         <HeaderWrap>
           <HeaderItemWrap>
             <AccountNameWrap>Account Name</AccountNameWrap>
-            <ConnectMetamask />
+            <Connect />
           </HeaderItemWrap>
           <MoreVertIcon sx={{ color: AppColors.primary, cursor: 'pointer' }} />
         </HeaderWrap>

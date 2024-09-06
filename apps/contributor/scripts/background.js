@@ -120,26 +120,6 @@ self.addEventListener('message', async (event) => {
   } else if (data.method === MessageMethod.EXPAND_VIEW) {
     const url = platform.getExtensionURL(JSON.parse(data.data).route);
     platform.openTab({ url });
-  } else if (data.method === MessageMethod.CONNECT) {
-    let provider
-    try {
-      let currentMetaMaskId = getMetaMaskId()
-      console.log('metamask id', currentMetaMaskId)
-      const metamaskPort = browser.runtime.connect(currentMetaMaskId)
-      const pluginStream = new PortStream(metamaskPort)
-      provider = new MetaMaskInpageProvider(pluginStream)
-      console.log('metamask provider', provider)
-      await provider.request({
-        method: 'eth_requestAccounts',
-      })
-    } catch (e) {
-      console.debug(`Metamask connect error `, e)
-      throw e
-    }
-    sendMessage({
-      method: MessageMethod.UPDATE_PROVIDER, 
-      data: "provider"
-    })
   }
 })
 const sendMessage = async (data) => {
