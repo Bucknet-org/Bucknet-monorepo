@@ -32,7 +32,13 @@ contract ContributorTest is Test {
         manager.grantRole(Roles.CONTRIBUTOR_ROLE, contributor_C);
         manager.grantRole(Roles.CONTRIBUTOR_ROLE, contributor_D);
 
-        contributor = new Contributor(address(manager));
+        address[] memory members = new address[](4);
+        members[0] = contributor_A;
+        members[1] = contributor_B;
+        members[2] = contributor_C;
+        members[3] = contributor_D;
+
+        contributor = new Contributor(address(manager), members);
         vm.stopPrank();
     }
 
@@ -50,7 +56,19 @@ contract ContributorTest is Test {
         console.log("================================".magenta());
 
         vm.prank(admin);
-        contributor.openEvalSession(bytes32(0));
+        uint256[] memory slots = new uint256[](4);
+        slots[0] = 0;
+        slots[1] = 1;
+        slots[2] = 2;
+        slots[3] = 3;
+
+        uint256[] memory numOfWorks = new uint256[](4);
+        numOfWorks[0] = 4;
+        numOfWorks[1] = 6;
+        numOfWorks[2] = 6;
+        numOfWorks[3] = 3;
+
+        contributor.openEvalSession(bytes32(0), slots, numOfWorks);
 
         uint256[] memory A_points = new uint256[](4);
         A_points[0] = 15; // A
@@ -71,16 +89,16 @@ contract ContributorTest is Test {
         C_points[3] = 15; // D
 
         vm.prank(contributor_A);
-        contributor.evaluate(A_points);
+        contributor.evaluate(slots, A_points);
 
         vm.prank(contributor_B);
-        contributor.evaluate(B_points);
+        contributor.evaluate(slots, B_points);
 
         vm.prank(contributor_C);
-        contributor.evaluate(C_points);
+        contributor.evaluate(slots, C_points);
 
         vm.prank(admin);
-        contributor.openEvalSession(bytes32(0));
+        contributor.openEvalSession(bytes32(0), slots, numOfWorks);
 
         console.log("Test Result".green());
         vm.prank(contributor_A);
