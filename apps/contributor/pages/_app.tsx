@@ -17,15 +17,6 @@ interface AppProps {
 export default function App({ Component, pageProps }: AppProps) {
   const [initState, setInitState] = useState<any>()
 
-  useEffect(() => {
-    const getWVS = async () => {
-      let res = await githubApi.wvs(1);
-      console.log('wvs', res.data)
-    }
-
-    getWVS()
-  }, [])
-
   const store = useMemo(() => {
     console.log('initState', initState)
     return configureStore(initState)

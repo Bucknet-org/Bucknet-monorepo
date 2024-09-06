@@ -31,6 +31,7 @@ const githubApi = {
         owner: 'Bekh-nam',
         repo: 'Bucknet',
         path: path,
+        accept: 'application/vnd.github.raw+json',
         mediaType: {
           format: "raw",
         },

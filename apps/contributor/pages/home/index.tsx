@@ -24,7 +24,7 @@ export default memo(function Home() {
         <Box>
           <Point />
         </Box>
-        <BoxFlex sx={{ cursor: 'pointer' }} onClick={() => expandView('browser')}>
+        <BoxFlex sx={{ cursor: 'pointer' }}>
           <History />
         </BoxFlex>
       </ContainerWrap>

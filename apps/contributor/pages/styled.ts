@@ -27,6 +27,29 @@ export const BoxFlex = styled(Box)(({ theme }) => ({
   gap: '10px',
 }))
 
+export const BoxFlexEnd = styled(Box)(({ ...props }) => ({
+  width: '100%',
+  justifyContent: 'flex-end',
+  display: 'flex',
+  alignItems: 'center',
+  gap: `${props.gap ? props.gap : 10}px`,
+}))
+export const BoxFlexSpaceBetween = styled(Box)(({ theme }) => ({
+  width: '100%',
+  justifyContent: 'space-between',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '10px',
+}))
+export const BoxFlexColumn = styled(Box)(({ theme }) => ({
+  width: '100%',
+  justifyContent: 'flex-start',
+  flexDirection: 'column',
+  display: 'flex',
+  alignItems: 'flex-start',
+  gap: '10px',
+}))
+
 export const WrapperHeader = styled(Box)(({}) => ({
   position: 'sticky',
   top: 0,

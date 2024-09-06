@@ -1,16 +1,22 @@
 import { AppColors, AppFont, AppSpace } from '@/constants/assets_app/app_theme'
+import { ROUTE } from '@/constants/route'
+import { expandView } from '@/utils/function'
 import { Box, Stack, styled, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 const point = 56.6
 const Point = () => {
+  const router = useRouter()
   return (
     <Container>
       <PointWrap>
         <PointNumber>{point}</PointNumber>
         <PointCurrency>pts</PointCurrency>
       </PointWrap>
-      <GradientBorderBox>Weekly Evaluation</GradientBorderBox>
+      <GradientBorderBox onClick={() => expandView('browser/wvs')}>
+        Weekly Evaluation
+      </GradientBorderBox>
     </Container>
   )
 }
