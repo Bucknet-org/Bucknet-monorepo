@@ -127,7 +127,6 @@ self.addEventListener('message', async (event) => {
       console.log('metamask id', currentMetaMaskId)
       const metamaskPort = browser.runtime.connect(currentMetaMaskId)
       const pluginStream = new PortStream(metamaskPort)
-      console.log('pluginStream', pluginStream)
       provider = new MetaMaskInpageProvider(pluginStream)
       console.log('metamask provider', provider)
       await provider.request({
@@ -137,7 +136,10 @@ self.addEventListener('message', async (event) => {
       console.debug(`Metamask connect error `, e)
       throw e
     }
-    sendMessage({ provider: provider })
+    sendMessage({
+      method: MessageMethod.UPDATE_PROVIDER, 
+      data: "provider"
+    })
   }
 })
 const sendMessage = async (data) => {

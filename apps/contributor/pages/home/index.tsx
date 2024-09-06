@@ -7,6 +7,7 @@ import { Connect } from '@/components/ConnectButton'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import Point from '@/components/Point'
 import History from '@/components/History'
+import ConnectMetamask from '@/components/ConnectMetamask'
 
 export default memo(function Home() {
   return (
@@ -15,7 +16,7 @@ export default memo(function Home() {
         <HeaderWrap>
           <HeaderItemWrap>
             <AccountNameWrap>Account Name</AccountNameWrap>
-            <Connect />
+            <ConnectMetamask />
           </HeaderItemWrap>
           <MoreVertIcon sx={{ color: AppColors.primary, cursor: 'pointer' }} />
         </HeaderWrap>
