@@ -4,9 +4,10 @@ import { useContext, useEffect, useState, createContext } from 'react'
 import createMetaMaskProvider from 'metamask-extension-provider';
 import { ChainId } from '@/constants/chainid'
 import { EthereumEvents } from '@/constants/events';
-
+import { ethers } from 'ethers';
 interface IWalletContext {
     provider: any | null
+    signer: any | null
     loggedIn: boolean
     address: string
     chainId: ChainId | null
@@ -19,6 +20,7 @@ interface IWalletContext {
 
 export const WalletContext = createContext<IWalletContext>({
     provider: null,
+    signer: null,
     loggedIn: false,
     address: '',
     chainId: null,
@@ -34,6 +36,7 @@ export function useWallet() {
 }
 
 export function WalletProvider({ children }: { children: any }) {
+    const [signer, setSigner] = useState<any | null>(null)
     const [provider, setProvider] = useState<any | null>(null)
     const [loggedIn, setLoggedIn] = useState(false)
     const [address, setAddress] = useState('')
@@ -80,6 +83,8 @@ export function WalletProvider({ children }: { children: any }) {
         }
         try {
             const accounts = await provider.request({ method: 'eth_requestAccounts' })
+            const _signer = await (new ethers.BrowserProvider(provider)).getSigner()
+            setSigner(_signer)
             handleAccountsChanged(accounts)
         } catch (error) {
             console.error(error)
@@ -89,6 +94,7 @@ export function WalletProvider({ children }: { children: any }) {
     const logout = async () => {
         setLoggedIn(false)
         setAddress('')
+        setSigner(null)
         await provider.request({ method: 'wallet_revokePermissions', params: [{"eth_accounts": {}}]})
     }
 
@@ -139,6 +145,7 @@ export function WalletProvider({ children }: { children: any }) {
 
     const contextProvider = {
         provider,
+        signer,
         loggedIn,
         address,
         chainId,

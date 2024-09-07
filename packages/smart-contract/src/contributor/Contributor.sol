@@ -102,7 +102,7 @@ contract Contributor is Context {
 
         for (uint256 i; i < len; ++i) {
             slot = slots_[i];
-            point = points_[i];a
+            point = points_[i];
             limitPoints = eval.numOfWorks[slot] * MAX_DECIMAL_PTS;
             
             require(point <= limitPoints, "invalid points");
