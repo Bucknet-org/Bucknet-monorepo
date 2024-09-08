@@ -52,9 +52,11 @@ export function WalletProvider({ children }: { children: any }) {
     }, [])
 
     useEffect(() => {
-        if (provider?.isConnected) {
+        if (provider?.isConnected()) {
             provider.request({ method: 'eth_accounts' }).then(handleAccountsChanged).catch(console.error)
             provider.on(EthereumEvents.CHAIN_CHANGED, handleChainChanged);
+            provider.on("accountsChanged", handleAccountsChanged);            
+            login()
 
             return () => {
                 provider.removeListener(EthereumEvents.CHAIN_CHANGED, handleChainChanged);
@@ -83,7 +85,7 @@ export function WalletProvider({ children }: { children: any }) {
         }
         try {
             const accounts = await provider.request({ method: 'eth_requestAccounts' })
-            const _signer = await (new ethers.BrowserProvider(provider)).getSigner()
+            const _signer = await (new ethers.BrowserProvider(provider)).getSigner(0)
             setSigner(_signer)
             handleAccountsChanged(accounts)
         } catch (error) {

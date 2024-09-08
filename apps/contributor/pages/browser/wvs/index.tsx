@@ -3,9 +3,12 @@ import { AppWarpper, BoxFlex, BoxFlexColumn, BoxFlexEnd, BoxFlexSpaceBetween } f
 import githubApi from '@/services/github/api'
 import { Button, ButtonBase, Checkbox, Link, Typography } from '@mui/material';
 import { useContributorContract } from '@/hooks/useContract';
+import { useAccessManagerV2Contract } from '@/hooks/useContract';
 import slotsJson from '@/jsons/slots.json';
 import { MerkleTree } from '@bucknet/proof-generator';
 import { Connect } from '@/components/ConnectButton';
+import { Roles } from '@/constants/contracts';
+import { useWallet } from '@/context/WalletProvider';
 
 interface Member {
   member: string;
@@ -89,7 +92,7 @@ const RenderMember = ({ member, works, pointObj, setPointObj }: Member) => {
     return () => {
       setPointObj({
         ...pointObj,
-        [member]: undefined
+        [member]: 0
       })
     }
   }, [totalPoint])
@@ -118,7 +121,11 @@ export default memo(function BrowserHome() {
     [member in string]: number | undefined
   }>({})
   const contributorContract = useContributorContract();
+  const accessManagerContract = useAccessManagerV2Contract();
+  const { address } = useWallet(); 
+  const [isAdmin, setIsAdmin] = useState(false);
 
+  
   useEffect(() => {
     const getWVS = async () => {
       let res = await githubApi.wvs(1);
@@ -128,6 +135,22 @@ export default memo(function BrowserHome() {
 
     getWVS()
   }, [])
+
+  useEffect(() => {
+    if(address) {
+      accessManagerContract?.hasRole(Roles.DEFAULT_ADMIN_ROLE, address)
+      .then((res: boolean) => {
+        console.log({res})
+        setIsAdmin(res)
+      })
+      .catch(err => {
+        console.log(err)
+        console.error(err) 
+        setIsAdmin(false)
+      })
+    }
+
+  }, [accessManagerContract])
 
   const evaluate = async () => {
     try {
@@ -143,7 +166,7 @@ export default memo(function BrowserHome() {
           slots.push(slotsJsonObj[member.toLocaleLowerCase()])
         }
       })
-
+      console.log(points)
       const receipt = await contributorContract.evaluate(slots, points)
       await receipt.wait()
       console.log(receipt)
@@ -165,17 +188,17 @@ export default memo(function BrowserHome() {
         Object.entries(item.works).map(([task, pow]) => {
           leaves.push(`${item.member}-${task}-${pow}`)
         })
-        if(slotsJsonObj[item.member.toLocaleLowerCase()]) {
+        if(slotsJsonObj[item.member.toLocaleLowerCase()] !== undefined) {
           slots.push(slotsJsonObj[item.member.toLocaleLowerCase()])
           numOfWorks.push(Object.keys(item.works).length)
         }
       })
       const tree = new MerkleTree(leaves)
       const poeRoot = tree.getHexRoot()
-      console.log({poeRoot, slots, numOfWorks})
-      // const receipt = await contributorContract.openEvalSession(poeRoot, slots, numOfWorks)
-      // await receipt.wait()
-      // console.log(receipt)
+      console.log(poeRoot, slots, numOfWorks)
+      const receipt = await contributorContract?.openEvalSession(poeRoot, slots, numOfWorks)
+      await receipt.wait()
+      console.log(receipt)
     } catch (err) {
       console.log(err)
     }
@@ -193,25 +216,29 @@ export default memo(function BrowserHome() {
           {
             Object.entries(pointObj).map(([member, point]) => {
               return (
-                <>
+                <div key={member}>
                   {point !== undefined && (
                     <div>{member}: {point}</div>
                   )}
-                </>
+                </div>
               )
             })
           }
         </BoxFlexSpaceBetween>
-        <ButtonBase sx={{
-          width: "200px", 
-          background: "blue", 
-          color: "white", 
-          padding: 1.5
-        }}
-        onClick={openEvalSession}
-        >
-          Open Evaluate Session
-        </ButtonBase>
+        {
+          isAdmin && (
+            <ButtonBase sx={{
+              width: "200px", 
+              background: "blue", 
+              color: "white", 
+              padding: 1.5
+            }}
+            onClick={openEvalSession}
+            >
+              Open Evaluate Session
+            </ButtonBase>
+          )
+        }
         <ButtonBase sx={{
           width: "100px", 
           background: "blue", 

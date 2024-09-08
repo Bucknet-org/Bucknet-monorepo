@@ -1,13 +1,29 @@
 import { AppColors, AppFont, AppSpace } from '@/constants/assets_app/app_theme'
-import { ROUTE } from '@/constants/route'
 import { expandView } from '@/utils/function'
 import { Box, Stack, styled, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useContributorContract } from '@/hooks/useContract'
+import { useWallet } from '@/context/WalletProvider'
 
-const point = 56.6
 const Point = () => {
-  const router = useRouter()
+  const [point, setPoint] = useState(0)
+  const contract = useContributorContract()
+  const {address} = useWallet()
+
+  useEffect(() => {
+    if(address) {
+      contract?.contribPts.staticCall(address)
+      .then(res => {
+        console.log(res)
+        setPoint(Number(res / BigInt(10000)))
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+
+  }, [address, contract])
+
   return (
     <Container>
       <PointWrap>
