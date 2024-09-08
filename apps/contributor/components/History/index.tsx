@@ -18,10 +18,10 @@ const History = () => {
         <CachedIcon />
       </ReloadIconWrap>
       <TabsContainer>
-        <TabButton active={activeTab === 'pts'} onClick={() => setActiveTab('pts')}>
+        <TabButton active={activeTab === 'pts' ? "true" : "false"} onClick={() => setActiveTab('pts')}>
           <TabTitle>Pts History</TabTitle>
         </TabButton>
-        <TabButton active={activeTab === 'eval'} onClick={() => setActiveTab('eval')}>
+        <TabButton active={activeTab === 'eval' ?  "true" : "false"} onClick={() => setActiveTab('eval')}>
           Eval. History
         </TabButton>
       </TabsContainer>
@@ -42,7 +42,7 @@ const TabsContainer = styled(Box)({
   marginBottom: AppSpace(1),
 })
 
-const TabButton = styled(Button)<{ active: boolean }>(({ active }) => ({
+const TabButton = styled(Button)<{ active: string }>(({ active }) => ({
   display: 'flex',
   flexDirection: 'row',
   background: 'none',
@@ -50,8 +50,8 @@ const TabButton = styled(Button)<{ active: boolean }>(({ active }) => ({
   padding: '8px 16px',
   fontSize: AppFont.medium,
   cursor: 'pointer',
-  color: active ? AppColors.primary : AppColors.disable,
-  borderBottom: active ? `2px solid ${AppColors.primary}` : '2px solid transparent',
+  color: active == "true" ? AppColors.primary : AppColors.disable,
+  borderBottom: active == "true" ? `2px solid ${AppColors.primary}` : '2px solid transparent',
   transition: 'all 0.3s ease',
   textTransform: 'none',
   borderRadius: 0,

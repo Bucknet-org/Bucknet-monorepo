@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@bucknet/stream": "*",
+    "@bucknet/proof-generator": "*",
     "@emotion/styled": "^11.13.0",
     "@metamask/providers": "^17.1.2",
     "@mui/icons-material": "^6.0.1",
