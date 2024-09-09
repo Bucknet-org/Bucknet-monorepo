@@ -102,22 +102,22 @@ contract ContributorTest is Test {
 
         console.log("Test Result".green());
         vm.prank(contributor_A);
-        uint256 A_pts = contributor.getPoints();
+        uint256 A_pts = contributor.contribPts(contributor_A);
         assertEq(A_pts, 166666);
         console.log("A: ", A_pts, "pts /", contributor.DENOMINATOR());
 
         vm.prank(contributor_B);
-        uint256 B_pts = contributor.getPoints();
+        uint256 B_pts = contributor.contribPts(contributor_B);
         assertEq(B_pts, 250000);
         console.log("B: ", B_pts, "pts /", contributor.DENOMINATOR());
 
         vm.prank(contributor_C);
-        uint256 C_pts = contributor.getPoints();
+        uint256 C_pts = contributor.contribPts(contributor_C);
         assertEq(C_pts, 183333);
         console.log("C: ", C_pts, "pts /", contributor.DENOMINATOR());
 
         vm.prank(contributor_D);
-        uint256 D_pts = contributor.getPoints();
+        uint256 D_pts = contributor.contribPts(contributor_D);
         assertEq(D_pts, 100000);
         console.log("D: ", D_pts, "pts /", contributor.DENOMINATOR());
     }
