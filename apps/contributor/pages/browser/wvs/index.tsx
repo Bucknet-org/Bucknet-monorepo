@@ -1,3 +1,4 @@
+/// <reference types="chrome"/> 
 import React, { memo, useEffect, useState } from 'react'
 import { AppWarpper, BoxFlex, BoxFlexColumn, BoxFlexEnd, BoxFlexSpaceBetween } from '@/pages/styled'
 import githubApi from '@/services/github/api'
@@ -9,6 +10,7 @@ import { MerkleTree } from '@bucknet/proof-generator';
 import { Connect } from '@/components/ConnectButton';
 import { Roles } from '@/constants/contracts';
 import { useWallet } from '@/context/WalletProvider';
+import { timeFormat } from '@/constants/dateFormat';
 
 interface Member {
   member: string;
@@ -169,7 +171,16 @@ export default memo(function BrowserHome() {
       console.log(points)
       const receipt = await contributorContract.evaluate(slots, points)
       await receipt.wait()
-      console.log(receipt)
+
+      chrome.storage.local.get({evalHistories: []}, function (result) {
+        const evalHistories = result.evalHistories;
+        evalHistories.push({time: new Date().toLocaleString("en-US", timeFormat).replace(',', ''), txhash: receipt.hash})
+        chrome.storage.local.set({evalHistories: evalHistories}, function () {
+          chrome.storage.local.get('evalHistories', function (result) {
+              console.log(result.evalHistories)
+          });
+      });
+      })
     } catch (err) {
       console.log(err)
     }

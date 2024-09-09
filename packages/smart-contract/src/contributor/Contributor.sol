@@ -51,8 +51,8 @@ contract Contributor is Context {
         _;
     }
 
-    function getEpochPoints(address member_, uint256 epoch_) external view returns (uint256) {
-        return avgPoints[member_][epoch_];
+    function getEpochPoints(address member_, uint256 epoch_) external view returns (uint256, uint256) {
+        return (evaluations[epoch_].closeAt, avgPoints[member_][epoch_]);
     }
 
     function updateMemberSlot(uint256 slot_, address newMember_) external onlyRole(manager.DEFAULT_ADMIN_ROLE()) {

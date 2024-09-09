@@ -8,13 +8,48 @@ import CachedIcon from '@mui/icons-material/Cached'
 import { relative } from 'path'
 import PtsHistory from './PtsHistory'
 import EvalHistory from './EvalHistory'
+import { useContributorContract } from '@/hooks/useContract'
+import { useWallet } from '@/context/WalletProvider'
+import { timeFormat } from '@/constants/dateFormat'
 
 const History = () => {
   const [activeTab, setActiveTab] = React.useState('pts')
+  const contract = useContributorContract()
+  const {address} = useWallet()
+
+  const refetch = async () => {
+    if (!contract || !address) return
+    const numOfEpochs = await contract.epoch()
+
+    chrome.storage.local.get({ptsHistories: []}, async (result) => {
+      const ptsHistories = result.ptsHistories;
+
+      if (ptsHistories.length == 0) {
+        // fetch all
+        for (let i = 1; i < Number(numOfEpochs); ++i) {
+          const epochPts = await contract.getEpochPoints(address, i)
+          ptsHistories.push({time: new Date(Number(epochPts[0]) * 1000).toLocaleString("en-US", timeFormat).replace(',', ''), pts: Number(epochPts[1] / BigInt(10000))})
+        }
+      } else {
+        // fetch start latest epoch
+        const latestEpoch = ptsHistories.length + 1;
+        for (let i = latestEpoch; i < Number(numOfEpochs); ++i) {
+          const epochPts = await contract.getEpochPoints(address, i)
+          ptsHistories.push({time: new Date(Number(epochPts[0]) * 1000).toLocaleString("en-US", timeFormat).replace(',', ''), pts: Number(epochPts[1] / BigInt(10000)) })
+        }
+      }
+      chrome.storage.local.set({ptsHistories: ptsHistories}, () => {
+        chrome.storage.local.get('ptsHistories', (result) => {
+            console.log(result.ptsHistories)
+        });
+      })
+    });
+  }
+
 
   return (
     <Box sx={{ width: '100%', position: 'relative' }}>
-      <ReloadIconWrap>
+      <ReloadIconWrap onClick={refetch}>
         <CachedIcon />
       </ReloadIconWrap>
       <TabsContainer>
