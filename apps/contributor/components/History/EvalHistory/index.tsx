@@ -1,7 +1,9 @@
 import { AppSpace } from '@/constants/assets_app/app_theme'
+import { getEvalHistory } from '@/selectors/appState.selector'
 import { formatLongString } from '@/utils/function'
 import { Box, Stack, styled, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 // const MockData = [
 //   { id: 1, time: 'Aug 26, 2024 01:11 PM', address: '0x3d8..5e2' },
@@ -16,20 +18,21 @@ interface EvalItem {
 }
 
 const EvalHistory = () => {
-  const [data, setData] = useState<EvalItem[]>();
+  const evalHistory = useSelector(getEvalHistory)
+  // const [data, setData] = useState<EvalItem[]>();
 
-  useEffect(() => {
-      chrome.storage.local.get("evalHistories", (result) => {
-        setData(result.evalHistories.reverse() as EvalItem[])
-      })
-  }, [])
+  // useEffect(() => {
+  //     chrome.storage.local.get("evalHistories", (result) => {
+  //       setData(result.evalHistories.reverse() as EvalItem[])
+  //     })
+  // }, [])
 
   return (
     <ListContainer>
-      {data?.map((item) => (
+      {evalHistory?.map((item) => (
         <ListItem>
-          <TimeText>{item.time}</TimeText>
-          <PointText>{formatLongString(item.txhash)}</PointText>
+          <TimeText>{item.timestamp}</TimeText>
+          <PointText>{formatLongString(item.txHash)}</PointText>
         </ListItem>
       ))}
     </ListContainer>

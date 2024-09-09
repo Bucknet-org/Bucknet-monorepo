@@ -107,33 +107,34 @@ self.addEventListener('message', async (event) => {
   const clientId = event.source.id
   const data = JSON.parse(event.data)
   if (data.method === MessageMethod.GET_INITIALIZE_DATA) {
-    const initState = await browser.storage.local.get()    
+    const initState = await browser.storage.local.get()
+    console.log('get state', initState)    
     sendMessage(
       {
         method: MessageMethod.INITIALIZE_DATA,
         data: JSON.stringify(initState),
-      }
+      },
+      clientId
     )
   } else if (data.method === MessageMethod.SET_INITIALIZE_DATA) {
-    sendMessage({ data: 'success' })
+    sendMessage(
+      { data: 'success' },
+      clientId
+    )
+    console.log('store state', JSON.parse(data.data))
     await browser.storage.local.set(JSON.parse(data.data))
   } else if (data.method === MessageMethod.EXPAND_VIEW) {
     const url = platform.getExtensionURL(JSON.parse(data.data).route);
     platform.openTab({ url });
   }
 })
-const sendMessage = async (data) => {
-  let currentTab = platform.currentTab()
-  browser.tabs
-    .sendMessage(currentTab.id, data)
-    .then(() => {
-      checkForLastErrorAndLog()
-    })
-    .catch(() => {
-      // An error may happen if the contentscript is blocked from loading,
-      // and thus there is no runtime.onMessage handler to listen to the message.
-      checkForLastErrorAndLog()
-    })
+const sendMessage = async (msg, clientId) => {
+  let allClients = []
+  let client = await clients.get(clientId)
+  allClients.push(client)
+  allClients.map((client) => {
+    return client.postMessage(msg)
+  })
 }
 
 function getMetaMaskId () {
