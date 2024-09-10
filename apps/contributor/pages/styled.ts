@@ -47,7 +47,9 @@ export const BoxFlexColumn = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   display: 'flex',
   alignItems: 'flex-start',
-  gap: '10px',
+  gap: '12px',
+  borderLeft: '1px solid white',
+  paddingLeft: '12px',
 }))
 
 export const WrapperHeader = styled(Box)(({}) => ({
