@@ -1,4 +1,5 @@
 {
+  "epoch": 1,
   "timestamp": "Sep 6 2024",
   "wvs": [
     {
@@ -18,10 +19,6 @@
     },
     {
       "member": "HieuVo",
-      "works": {}
-    },
-    {
-      "member": "TamLu",
       "works": {}
     },
     {
