@@ -2,11 +2,27 @@ import { AnyAction } from 'redux'
 import * as actionConstant from '../actions/action.constant'
 
 interface AppState {
-  provider: any
+  ptsHistory: Array<PtsHistoryType>
+  evalHistory: Array<EvalHistoryType>
 }
 
+
 const initialState: AppState = {
-  provider: {}
+  ptsHistory: [],
+  evalHistory: []
+}
+
+export interface PtsHistoryType {
+  timestamp: number
+  txHash: string
+  avgPoints: string
+  valWorks: any
+}
+
+export interface EvalHistoryType {
+  timestamp: number
+  txHash: string
+  wvs: any
 }
 
 export default function appReducer(state: AppState, action: AnyAction): AppState {
@@ -15,10 +31,16 @@ export default function appReducer(state: AppState, action: AnyAction): AppState
     ...state,
   }
   switch (action.type) {
-    case actionConstant.UPDATE_PROVIDER:
+    case actionConstant.ADD_NEW_EVAL_HISTORY:
       return {
         ...appState,
-        provider: action.payload,
+        evalHistory: [...appState.evalHistory, action.payload],
+      }
+    
+    case actionConstant.ADD_NEW_PTS_HISTORY:
+      return {
+        ...appState,
+        ptsHistory: [...appState.ptsHistory, action.payload],
       }
 
     default:

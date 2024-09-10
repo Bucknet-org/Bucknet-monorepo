@@ -1,20 +1,36 @@
+import { getPtsHistory } from '@/selectors/appState.selector'
+import { addNewPtsHistory } from '@/store/actions/app.action'
 import { Box, Stack, styled, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-const MockData = [
-  { id: 1, time: 'Aug 26, 2024 01:11 PM', point: '3,5' },
-  { id: 2, time: 'Aug 19, 2024 07:52 AM', point: '19' },
-  { id: 3, time: 'Aug 12, 2024 03:20 PM', point: '12' },
-  { id: 4, time: 'Aug 05, 2024 11:11 AM', point: '7,5' },
-]
+// const MockData = [
+//   { id: 1, time: 'Aug 26, 2024 01:11 PM', point: '3,5' },
+//   { id: 2, time: 'Aug 19, 2024 07:52 AM', point: '19' },
+//   { id: 3, time: 'Aug 12, 2024 03:20 PM', point: '12' },
+//   { id: 4, time: 'Aug 05, 2024 11:11 AM', point: '7,5' },
+// ]
+
+interface PtsItem {
+  time: string,
+  pts: number
+}
 
 const PtsHistory = () => {
+  const ptsHistory = useSelector(getPtsHistory)
+  
+  // useEffect(() => {
+  //   chrome.storage.local.get("ptsHistories", (result) => {
+  //     setData(result.ptsHistories.reverse() as PtsItem[])
+  //   })
+  // }, [])
+
   return (
     <ListContainer>
-      {MockData.map((item) => (
-        <ListItem key={item.id}>
-          <TimeText>{item.time}</TimeText>
-          <PointText>{item.point} pts</PointText>
+      {ptsHistory?.map((item) => (
+        <ListItem>
+          <TimeText>{item.timestamp}</TimeText>
+          <PointText>{item.avgPoints} pts</PointText>
         </ListItem>
       ))}
     </ListContainer>

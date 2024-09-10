@@ -1,3 +1,4 @@
+/// <reference types="chrome"/> 
 import React, { memo, useEffect, useState } from 'react'
 import { AppWarpper, BoxFlex, BoxFlexColumn, BoxFlexEnd, BoxFlexSpaceBetween } from '@/pages/styled'
 import githubApi from '@/services/github/api'
@@ -10,6 +11,11 @@ import { Connect } from '@/components/ConnectButton'
 import { Roles } from '@/constants/contracts'
 import { useWallet } from '@/context/WalletProvider'
 import { AppColors, AppSpace } from '@/constants/assets_app/app_theme'
+import { timeFormat } from '@/constants/dateFormat';
+import { useDispatch, useSelector } from 'react-redux';
+import { addNewEvalHistory } from '@/store/actions/app.action';
+import { EvalHistoryType } from '@/store/reducers/app.reducer';
+import { getState } from '@/selectors/appState.selector';
 
 interface Member {
   member: string
@@ -120,6 +126,9 @@ const RenderMember = ({ member, works, pointObj, setPointObj }: Member) => {
 }
 
 export default memo(function BrowserHome() {
+  const state = useSelector(getState)
+  const dispatch = useDispatch()
+
   const [wvs, setWvs] = useState<any>()
   const [pointObj, setPointObj] = useState<{
     [member in string]: number | undefined
@@ -138,6 +147,38 @@ export default memo(function BrowserHome() {
 
     getWVS()
   }, [])
+
+  useEffect(() => {
+    let evalHistory: EvalHistoryType = {
+      timestamp: new Date().getTime(),
+      txHash: 'asdfasd',
+      wvs: wvs
+    }
+
+    console.log('test eval history', evalHistory)
+    dispatch(addNewEvalHistory(evalHistory))
+    console.log('state', state)
+  }, [wvs])
+
+  useEffect(() => {
+    console.log('state', state)
+  }, [state])
+
+  useEffect(() => {
+    let evalHistory: EvalHistoryType = {
+      timestamp: new Date().getTime(),
+      txHash: 'asdfasd',
+      wvs: wvs
+    }
+
+    console.log('test eval history', evalHistory)
+    dispatch(addNewEvalHistory(evalHistory))
+    console.log('state', state)
+  }, [wvs])
+
+  useEffect(() => {
+    console.log('state', state)
+  }, [state])
 
   useEffect(() => {
     if (address) {
@@ -172,7 +213,23 @@ export default memo(function BrowserHome() {
       console.log(points)
       const receipt = await contributorContract.evaluate(slots, points)
       await receipt.wait()
-      console.log(receipt)
+
+      let evalHistory: EvalHistoryType = {
+        timestamp: new Date().getTime(),
+        txHash: receipt.hash,
+        wvs: wvs
+      }
+      dispatch(addNewEvalHistory(evalHistory))
+
+      // chrome.storage.local.get({evalHistories: []}, function (result) {
+      //   const evalHistories = result.evalHistories;
+      //   evalHistories.push({time: new Date().toLocaleString("en-US", timeFormat).replace(',', ''), txhash: receipt.hash})
+      //   chrome.storage.local.set({evalHistories: evalHistories}, function () {
+      //     chrome.storage.local.get('evalHistories', function (result) {
+      //         console.log(result.evalHistories)
+      //     });
+      // });
+      // })
     } catch (err) {
       console.log(err)
     }

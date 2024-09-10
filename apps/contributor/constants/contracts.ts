@@ -9,7 +9,7 @@ enum Roles {
 
 const AccessManagerV2Addresses = "0x90Ef23D97BAA809025Abfe026F8c3Dc0eaC0a68E"
 
-const ContributorAddresses = "0x4412aBdDc4BB44E9F199c61Ec196dDda59c68e41"
+const ContributorAddresses = "0xEe71c66370D5c2BFFBaDF71A5dF174aeDc05E846"
 
 export {
     Roles,

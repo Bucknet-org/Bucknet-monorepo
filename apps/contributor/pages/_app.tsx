@@ -1,8 +1,6 @@
 import Header from "@/components/Layout/Header";
 import { MESSAGE } from "@/constants/message";
 import { WalletProvider } from "@/context/WalletProvider";
-import githubApi from "@/services/github/api";
-import { updateProvider } from "@/store/actions/app.action";
 import configureStore from "@/store/store";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Provider } from "react-redux";

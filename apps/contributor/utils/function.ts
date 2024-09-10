@@ -20,3 +20,8 @@ export const connectMetamask = () => {
     )
   })
 }
+
+export const formatLongString = (str: string) => {
+  const len = str.length;
+  return `${str.slice(0,5)}...${str.slice(len - 5, len)}`
+}
