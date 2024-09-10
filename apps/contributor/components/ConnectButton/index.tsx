@@ -46,6 +46,7 @@ const AddressWraper = styled(Stack)({
   flexDirection: 'row',
   alignItems: 'center',
   gap: AppSpace(1),
+  paddingLeft: '8px'
 })
 
 const Address = styled(Button)({
