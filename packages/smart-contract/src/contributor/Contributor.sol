@@ -13,6 +13,7 @@ contract Contributor is Context {
         bytes32 poe;
         uint128 openAt;
         uint128 closeAt;
+        uint256 closeBlock;
         EnumerableSet.AddressSet evaluators;
         mapping(uint256 slot => uint256) score;
         mapping(uint256 slot => uint256) numOfWorks;
@@ -30,9 +31,10 @@ contract Contributor is Context {
     uint256 public epoch;
     AccessManagerV2 public manager;
     
-    mapping(address => uint256) private penalty;
-    mapping(address => uint256) private contribPts;
-    mapping(uint256 => address) private memberOfSlot;
+    mapping(address => uint256) public penalty;
+    mapping(address => uint256) public contribPts;
+    mapping(uint256 => address) public memberOfSlot;
+    mapping(address => uint256) public slotOfMember;
     mapping(uint256 => Evaluation) private evaluations;
     mapping(address => mapping(uint256 => uint256)) private avgPoints;
 
@@ -40,6 +42,7 @@ contract Contributor is Context {
         manager = AccessManagerV2(manager_);
 
         for (uint256 i; i < members_.length; ++i) {
+            slotOfMember[members_[i]] = i;
             memberOfSlot[i] = members_[i];
         }
     }
@@ -49,20 +52,14 @@ contract Contributor is Context {
         _;
     }
 
-    function getPoints() external view returns (uint256) {
-        return contribPts[_msgSender()];
-    }
-
-    function getPenaltyPoints() external view returns (uint256) {
-        return penalty[_msgSender()];
-    }
-
-    function getEpochPoints(uint256 epoch_) external view returns (uint256) {
-        return avgPoints[_msgSender()][epoch_];
+    function getPointsHistory(address member_, uint256 epoch_) external view returns (uint256, uint256, uint256) {
+        return (evaluations[epoch_].closeAt, evaluations[epoch_].closeBlock, avgPoints[member_][epoch_]);
     }
 
     function updateMemberSlot(uint256 slot_, address newMember_) external onlyRole(manager.DEFAULT_ADMIN_ROLE()) {
+        delete slotOfMember[memberOfSlot[slot_]];
         delete memberOfSlot[slot_];
+        slotOfMember[newMember_] = slot_;
         memberOfSlot[slot_] = newMember_;
         emit MemberSlotUpdated(_msgSender(), slot_);
     }
@@ -90,7 +87,6 @@ contract Contributor is Context {
         uint256 len = points_.length;
         address sender = _msgSender();
         require(len == slots_.length, "length mismatch");
-        require(len == manager.getRoleMemberCount(Roles.CONTRIBUTOR_ROLE), "must evaluate all");
 
         Evaluation storage eval = evaluations[epoch];
 
@@ -102,9 +98,10 @@ contract Contributor is Context {
 
         for (uint256 i; i < len; ++i) {
             slot = slots_[i];
-            point = points_[i];a
+            point = points_[i];
             limitPoints = eval.numOfWorks[slot] * MAX_DECIMAL_PTS;
             
+            require(memberOfSlot[slot] != address(0), "not bound yet");
             require(point <= limitPoints, "invalid points");
             eval.score[slot] += point;
         }
@@ -138,11 +135,12 @@ contract Contributor is Context {
                 finalizePts = 0;
                 penalty[evaluator] -= avgPts;
             }
-            contribPts[memberOfSlot[i]] += finalizePts;
+            contribPts[evaluator] += finalizePts;
             avgPoints[evaluator][epoch_] = finalizePts;
         }
 
         eval.closeAt = uint128(block.timestamp);
+        eval.closeBlock = block.number;
 
         emit EvalSessionClosed(epoch_);
     }
