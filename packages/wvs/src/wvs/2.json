@@ -1,0 +1,49 @@
+{
+    "epoch": 1,
+    "timestamp": "Sep 6 2024",
+    "wvs": [
+      {
+        "member": "Bekhnam",
+        "works": {
+          "Contributor Model Doc": "https://docs.google.com/document/d/1eDWDm8K20MKzjVuNFgZ5KNTBy0_LTETu/edit",
+          "Smart Contract: Contributor Codebase": "https://github.com/Bekh-nam/Bucknet/tree/feat/smart-contract",
+          "Extension: Config Package Build and Connect Wallet to Extension": "https://github.com/Bekh-nam/Bucknet/tree/feat/contributor",
+          "Extension: Github REST API and store": "https://github.com/Bekh-nam/Bucknet/tree/feat/contributor",
+          "Research: Credit Score and Social Credit Score": "https://docs.google.com/document/d/1YN8CLt-vKlZR__rypYRGwtAkK5wWEiuQ/edit?usp=drive_link",
+          "Research: Modular Architecture": "https://docs.google.com/document/d/1wCrWPYNxQfOJLe7j2j5_b7j8AYeUoMkT/edit?usp=drive_link",
+          "Research: Token Bound for Proof of Everything": "https://docs.google.com/document/d/1jaybpxXliZBM1k5EMXX-h--GS3BugroN/edit?usp=drive_link",
+          "TRs - Architecture Design": "https://docs.google.com/document/d/1Tih8XeXi0YBcUYvgVGouiqXNATRzL928/edit?usp=drive_link",
+          "Software development lifecycle (SDLC)": "https://docs.google.com/document/d/15L5HQyHUt-pO5Cgpgq5a1n9FP8X3PNoF/edit?usp=drive_link",
+          "Packages: proof-generator and wvs": "https://github.com/Bekh-nam/Bucknet/tree/feat/wvs"
+        }
+      },
+      {
+        "member": "HieuVo",
+        "works": {}
+      },
+      {
+        "member": "TuanHoang",
+        "works": {
+          "Smart Contract: Contributor": "https://github.com/Bekh-nam/Bucknet/tree/feat/smart-contract",
+          "Wallet Provider": "https://github.com/Bekh-nam/Bucknet/tree/feat/contributor"
+        }
+      },
+      {
+        "member": "StevenTran",
+        "works": {
+          "Extension: Refactor UI": "https://github.com/Bekh-nam/Bucknet/tree/steven/ui_contributor"
+        }
+      },
+      {
+        "member": "PhongTo",
+        "works": {}
+      },
+      { 
+        "member": "Serein", 
+        "works": { 
+          "Pros, Cons, and Final Penalty Calculation Logic": "https://docs.google.com/spreadsheets/d/15qQrJEcmycrgxuK_2GJANbWrtKOI2zEuLU1Yzdvlb6g/edit?usp=sharing", 
+          "Design UI/UX for extension contributor score": "https://www.figma.com/design/IRhDxW1OiBztKOapVEHizs/Bucknet?node-id=0-1&node-type=CANVAS&t=aGKj2Blt7rL076fb-0" 
+        } 
+      }
+    ]
+  }
