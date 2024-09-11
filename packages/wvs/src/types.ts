@@ -3,7 +3,7 @@ export interface RawData {
   works: string
 }
 
-export interface EvaluationInfo {
+export interface TxsData {
   poe: string
   txHash: string
   sender: string

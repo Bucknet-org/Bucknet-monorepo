@@ -3,11 +3,10 @@ import { dirLength, loadFile, saveFile } from "./utils";
 import { processData } from "./dataProcessor";
 import { useContributorContract } from "./useContract";
 import slotsJson from "./jsons/slots.json"
-import { EvaluationInfo, RawData } from "./types";
+import { RawData, TxsData } from "./types";
 
 async function openEvaluation() {
-    const PK = '';
-    const txsDir = join(__dirname, "txs")
+    const PK = process.env.PRIVATE_KEY || '';
     const wvsDir = join(__dirname, 'wvs')
     const currentEpoch = dirLength(wvsDir)
     const poe = await processData(wvsDir, currentEpoch)
@@ -36,13 +35,15 @@ async function openEvaluation() {
     tx.wait();
     console.log(tx.hash)
 
-    const detail: EvaluationInfo = {
+    const txs: TxsData = {
         poe: poe,
         txHash: tx.hash,
         sender: tx.from,
     }
 
-    saveFile(join(txsDir, `${currentEpoch.toString()}.json`), detail)
+    rawData["txsData"] = txs
+
+    saveFile(join(wvsDir, `${currentEpoch.toString()}.json`), rawData)
 };
 
 openEvaluation().catch(console.error);

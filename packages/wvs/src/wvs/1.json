@@ -38,12 +38,17 @@
       "member": "PhongTo",
       "works": {}
     },
-    { 
-      "member": "Serein", 
-      "works": { 
-        "Pros, Cons, and Final Penalty Calculation Logic": "https://docs.google.com/spreadsheets/d/15qQrJEcmycrgxuK_2GJANbWrtKOI2zEuLU1Yzdvlb6g/edit?usp=sharing", 
-        "Design UI/UX for extension contributor score": "https://www.figma.com/design/IRhDxW1OiBztKOapVEHizs/Bucknet?node-id=0-1&node-type=CANVAS&t=aGKj2Blt7rL076fb-0" 
-      } 
+    {
+      "member": "Serein",
+      "works": {
+        "Pros, Cons, and Final Penalty Calculation Logic": "https://docs.google.com/spreadsheets/d/15qQrJEcmycrgxuK_2GJANbWrtKOI2zEuLU1Yzdvlb6g/edit?usp=sharing",
+        "Design UI/UX for extension contributor score": "https://www.figma.com/design/IRhDxW1OiBztKOapVEHizs/Bucknet?node-id=0-1&node-type=CANVAS&t=aGKj2Blt7rL076fb-0"
+      }
     }
-  ]
+  ],
+  "txsData": {
+    "poe": "0x7a9bb8152761d42a7c631870b8e85a25296f8c67a1ddfb3a13ce9013fbda1d0c",
+    "txHash": "0x3e89e58311c14c70b71fcdbcace536077c556587257a16695bc031e63a70255e",
+    "sender": "0xB18922995ddE6C185430EfC9DCb79ba86D888Dba"
+  }
 }
