@@ -1,5 +1,6 @@
 import { getPtsHistory } from '@/selectors/appState.selector'
 import { PtsHistoryType } from '@/store/reducers/app.reducer'
+import { formatTime } from '@/utils/function'
 import { Box, styled, Typography } from '@mui/material'
 import { useSelector } from 'react-redux'
 
@@ -10,7 +11,7 @@ const PtsHistory = () => {
     <ListContainer>
       {ptsHistory?.map((item: PtsHistoryType, index: number) => (
         <ListItem key={index}>
-          <TimeText>{item.timestamp}</TimeText>
+          <TimeText>{formatTime(item.timestamp)}</TimeText>
           <PointText>{item.avgPoints} pts</PointText>
         </ListItem>
       ))}

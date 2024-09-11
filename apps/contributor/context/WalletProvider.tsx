@@ -5,6 +5,7 @@ import createMetaMaskProvider from 'metamask-extension-provider';
 import { ChainId } from '@/constants/chainid'
 import { EthereumEvents } from '@/constants/events';
 import { ethers } from 'ethers';
+
 interface IWalletContext {
     provider: any | null
     signer: any | null

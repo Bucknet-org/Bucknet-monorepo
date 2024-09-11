@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import { useContributorContract } from '@/hooks/useContract'
 import { useWallet } from '@/context/WalletProvider'
 import { useRouter } from 'next/router'
-import { ROUTE } from '@/constants/route'
 
 const Point = () => {
   const [point, setPoint] = useState(0)
@@ -33,7 +32,7 @@ const Point = () => {
         <PointNumber>{point}</PointNumber>
         <PointCurrency>pts</PointCurrency>
       </PointWrap>
-      <GradientBorderBox onClick={() => router.push(ROUTE.BROWSER.WVS)}>
+      <GradientBorderBox onClick={() => expandView('browser/wvs')}>
         Weekly Evaluation
       </GradientBorderBox>
     </Container>

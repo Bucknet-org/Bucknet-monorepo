@@ -15,10 +15,10 @@ export default memo(function Index() {
 
   useEffect(() => {
     (async () => {
-      let epoch = await contributorContract?.epoch() || 1
+      let epoch = await contributorContract?.epoch()
       if (epoch != currentEpoch) {
         console.log('epoch', epoch)
-        dispatch(updateEpoch(epoch))
+        dispatch(updateEpoch(Number(epoch)))
         try {
           let res = await githubApi.wvs(epoch)
           console.log('WVS', JSON.parse(res.data))

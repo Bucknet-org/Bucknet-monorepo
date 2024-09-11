@@ -199,21 +199,19 @@ export default memo(function WVS() {
       accessManagerContract
         ?.hasRole(Roles.CONTRIBUTOR_ROLE, address)
         .then((res: boolean) => {
-          console.log({ res })
           setIsContributor(res)
         })
         .catch((err) => {
-          console.log(err)
           console.error(err)
           setIsContributor(false)
         })
     }
-  }, [accessManagerContract])
+  }, [])
 
   return (
     <AppContainer>
       <Connect />
-      <Typography py={1} px={1} fontSize={24} color={AppColors.primary} >Weekly Evaluation</Typography>
+      <Typography py={1} px={1} fontSize={24} color={AppColors.primary} >Weekly Evaluation {wvs.epoch}</Typography>
       <Stack
         sx={{
           flexDirection: 'row',

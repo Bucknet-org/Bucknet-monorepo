@@ -1,3 +1,4 @@
+import { timeFormat } from "@/constants/dateFormat"
 import { MESSAGE } from "@/constants/message"
 
 export const expandView = (route: string = 'browser/home') => {
@@ -31,4 +32,9 @@ export const getStrTruncateMiddle = (str: string, numChars: number) => {
   const start = str.slice(0, numChars)
   const end = str.slice(-numChars)
   return `${start}....${end}`
+}
+
+
+export const formatTime = (timestamp: number) => {
+  return new Date(timestamp).toLocaleString("us-US", timeFormat)
 }

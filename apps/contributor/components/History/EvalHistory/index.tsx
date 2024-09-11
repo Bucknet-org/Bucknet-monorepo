@@ -1,7 +1,7 @@
 import { AppSpace } from '@/constants/assets_app/app_theme'
 import { getEvalHistory } from '@/selectors/appState.selector'
 import { EvalHistoryType } from '@/store/reducers/app.reducer'
-import { getStrTruncateMiddle } from '@/utils/function'
+import { formatTime, getStrTruncateMiddle } from '@/utils/function'
 import { Box, Stack, styled, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -18,7 +18,7 @@ const EvalHistory = () => {
     <ListContainer>
       {evalHistory?.map((item: EvalHistoryType, index: number) => (
         <ListItem key={index}>
-          <TimeText>{item.timestamp}</TimeText>
+          <TimeText>{formatTime(item.timestamp)}</TimeText>
           <PointText>{getStrTruncateMiddle(item.txHash, 5)}</PointText>
         </ListItem>
       ))}
