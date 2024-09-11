@@ -1,9 +1,13 @@
 import Header from "@/components/Layout/Header";
 import { MESSAGE } from "@/constants/message";
 import { WalletProvider } from "@/context/WalletProvider";
+import { useContributorContract } from "@/hooks/useContract";
+import { getCurrentEpoch } from "@/selectors/appState.selector";
+import githubApi from "@/services/github/api";
+import { updateEpoch, updateWVS } from "@/store/actions/app.action";
 import configureStore from "@/store/store";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Provider } from "react-redux";
+import { Provider, useSelector, useDispatch } from "react-redux";
 
 // const queryClient = new QueryClient()
 
@@ -13,6 +17,7 @@ interface AppProps {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
+  const contributorContract = useContributorContract()
   const [initState, setInitState] = useState<any>()
 
   const store = useMemo(() => {

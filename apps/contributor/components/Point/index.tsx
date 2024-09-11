@@ -4,11 +4,14 @@ import { Box, Stack, styled, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useContributorContract } from '@/hooks/useContract'
 import { useWallet } from '@/context/WalletProvider'
+import { useRouter } from 'next/router'
+import { ROUTE } from '@/constants/route'
 
 const Point = () => {
   const [point, setPoint] = useState(0)
   const contract = useContributorContract()
   const {address} = useWallet()
+  const router = useRouter()
 
   useEffect(() => {
     if(address) {
@@ -30,7 +33,7 @@ const Point = () => {
         <PointNumber>{point}</PointNumber>
         <PointCurrency>pts</PointCurrency>
       </PointWrap>
-      <GradientBorderBox onClick={() => expandView('browser/wvs')}>
+      <GradientBorderBox onClick={() => router.push(ROUTE.BROWSER.WVS)}>
         Weekly Evaluation
       </GradientBorderBox>
     </Container>

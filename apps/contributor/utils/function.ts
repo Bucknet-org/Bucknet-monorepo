@@ -21,7 +21,14 @@ export const connectMetamask = () => {
   })
 }
 
-export const formatLongString = (str: string) => {
-  const len = str.length;
-  return `${str.slice(0,5)}...${str.slice(len - 5, len)}`
+export const getStrTruncateMiddle = (str: string, numChars: number) => {
+  if (!str) {
+    return ''
+  }
+  const strLength = str.length
+  if (strLength <= numChars * 2) return str
+
+  const start = str.slice(0, numChars)
+  const end = str.slice(-numChars)
+  return `${start}....${end}`
 }

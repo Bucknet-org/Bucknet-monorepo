@@ -15,7 +15,8 @@ import { timeFormat } from '@/constants/dateFormat';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewEvalHistory } from '@/store/actions/app.action';
 import { EvalHistoryType } from '@/store/reducers/app.reducer';
-import { getState } from '@/selectors/appState.selector';
+import { getState, getWVS } from '@/selectors/appState.selector';
+import { getStrTruncateMiddle } from '@/utils/function'
 
 interface Member {
   member: string
@@ -76,8 +77,7 @@ const RenderWork = ({ work, pow, setPoint }: Work) => {
       <Typography flex={2}>{work}</Typography>
 
       <Link sx={{textDecoration: 'none'}} color={AppColors.primary} flex={1} href={pow} target="_blank">
-        {/* {pow.slice(0, 20) + '...' + pow.slice(pow.length - 20, pow.length)} */}
-        Check detail
+        {getStrTruncateMiddle(pow, 10)}
       </Link>
       <EvalScoring setPoint={setPoint} />
     </Stack>
@@ -125,73 +125,30 @@ const RenderMember = ({ member, works, pointObj, setPointObj }: Member) => {
   )
 }
 
-export default memo(function BrowserHome() {
-  const state = useSelector(getState)
+export default memo(function WVS() {
+  const wvs = useSelector(getWVS)
   const dispatch = useDispatch()
 
-  const [wvs, setWvs] = useState<any>()
   const [pointObj, setPointObj] = useState<{
     [member in string]: number | undefined
   }>({})
   const contributorContract = useContributorContract()
   const accessManagerContract = useAccessManagerV2Contract()
   const { address } = useWallet()
-  const [isAdmin, setIsAdmin] = useState(false)
-
-  useEffect(() => {
-    const getWVS = async () => {
-      let res = await githubApi.wvs(1)
-      console.log('wvs', JSON.parse(res.data))
-      setWvs(JSON.parse(res.data))
-    }
-
-    getWVS()
-  }, [])
-
-  useEffect(() => {
-    let evalHistory: EvalHistoryType = {
-      timestamp: new Date().getTime(),
-      txHash: 'asdfasd',
-      wvs: wvs
-    }
-
-    console.log('test eval history', evalHistory)
-    dispatch(addNewEvalHistory(evalHistory))
-    console.log('state', state)
-  }, [wvs])
-
-  useEffect(() => {
-    console.log('state', state)
-  }, [state])
-
-  useEffect(() => {
-    let evalHistory: EvalHistoryType = {
-      timestamp: new Date().getTime(),
-      txHash: 'asdfasd',
-      wvs: wvs
-    }
-
-    console.log('test eval history', evalHistory)
-    dispatch(addNewEvalHistory(evalHistory))
-    console.log('state', state)
-  }, [wvs])
-
-  useEffect(() => {
-    console.log('state', state)
-  }, [state])
+  const [isContributor, setIsContributor] = useState(false)
 
   useEffect(() => {
     if (address) {
       accessManagerContract
-        ?.hasRole(Roles.DEFAULT_ADMIN_ROLE, address)
+        ?.hasRole(Roles.CONTRIBUTOR_ROLE, address)
         .then((res: boolean) => {
           console.log({ res })
-          setIsAdmin(res)
+          setIsContributor(res)
         })
         .catch((err) => {
           console.log(err)
           console.error(err)
-          setIsAdmin(false)
+          setIsContributor(false)
         })
     }
   }, [accessManagerContract])
@@ -215,50 +172,12 @@ export default memo(function BrowserHome() {
       await receipt.wait()
 
       let evalHistory: EvalHistoryType = {
+        epoch: wvs?.epoch,
         timestamp: new Date().getTime(),
         txHash: receipt.hash,
         wvs: wvs
       }
       dispatch(addNewEvalHistory(evalHistory))
-
-      // chrome.storage.local.get({evalHistories: []}, function (result) {
-      //   const evalHistories = result.evalHistories;
-      //   evalHistories.push({time: new Date().toLocaleString("en-US", timeFormat).replace(',', ''), txhash: receipt.hash})
-      //   chrome.storage.local.set({evalHistories: evalHistories}, function () {
-      //     chrome.storage.local.get('evalHistories', function (result) {
-      //         console.log(result.evalHistories)
-      //     });
-      // });
-      // })
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const openEvalSession = async () => {
-    try {
-      if (!contributorContract && !wvs?.wvs) return
-      //member-taskname-pow
-      const leaves: string[] = []
-      const slots: number[] = []
-      const numOfWorks: number[] = []
-      const slotsJsonObj: { [member in string]: number } = slotsJson
-
-      wvs.wvs.map((item: Member) => {
-        Object.entries(item.works).map(([task, pow]) => {
-          leaves.push(`${item.member}-${task}-${pow}`)
-        })
-        if (slotsJsonObj[item.member.toLocaleLowerCase()] !== undefined) {
-          slots.push(slotsJsonObj[item.member.toLocaleLowerCase()])
-          numOfWorks.push(Object.keys(item.works).length)
-        }
-      })
-      const tree = new MerkleTree(leaves)
-      const poeRoot = tree.getHexRoot()
-      console.log(poeRoot, slots, numOfWorks)
-      const receipt = await contributorContract?.openEvalSession(poeRoot, slots, numOfWorks)
-      await receipt.wait()
-      console.log(receipt)
     } catch (err) {
       console.log(err)
     }
@@ -288,7 +207,7 @@ export default memo(function BrowserHome() {
           }}
         >
           <Typography flex={2}>Work</Typography>
-          <Typography flex={1}>Detail</Typography>
+          <Typography flex={1}>PoW</Typography>
           <Typography pl={12} flex={1} >Score</Typography>
         </Stack>
       </Stack>
@@ -323,8 +242,7 @@ export default memo(function BrowserHome() {
         
       </ContentWrap>
       <Stack flexDirection='row' gap={4} justifyContent='flex-end'>
-      {isAdmin && <SubmitButton onClick={openEvalSession}>Open Evaluate Session</SubmitButton>}
-      <SubmitButton onClick={evaluate}>Submit</SubmitButton>
+      {isContributor && <SubmitButton onClick={evaluate}>Submit</SubmitButton>}
       </Stack>
      
     </AppContainer>
