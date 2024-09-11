@@ -13,7 +13,6 @@ contract Contributor is Context {
         bytes32 poe;
         uint128 openAt;
         uint128 closeAt;
-        uint256 closeBlock;
         EnumerableSet.AddressSet evaluators;
         mapping(uint256 slot => uint256) score;
         mapping(uint256 slot => uint256) numOfWorks;
@@ -52,8 +51,8 @@ contract Contributor is Context {
         _;
     }
 
-    function getPointsHistory(address member_, uint256 epoch_) external view returns (uint256, uint256, uint256) {
-        return (evaluations[epoch_].closeAt, evaluations[epoch_].closeBlock, avgPoints[member_][epoch_]);
+    function getPointsHistory(address member_, uint256 epoch_) external view returns (uint256, uint256) {
+        return (evaluations[epoch_].closeAt, avgPoints[member_][epoch_]);
     }
 
     function updateMemberSlot(uint256 slot_, address newMember_) external onlyRole(manager.DEFAULT_ADMIN_ROLE()) {
@@ -126,7 +125,7 @@ contract Contributor is Context {
         for (uint256 i; i < evaluators.length; ++i) {
             evaluator = evaluators[i];
             uint256 finalizePts;
-            uint256 avgPts = (eval.score[i] * DENOMINATOR / eval.evaluators.length());
+            uint256 avgPts = (eval.score[slotOfMember[evaluator]] * DENOMINATOR / eval.evaluators.length());
             if (avgPts > penalty[evaluator]) {
                 finalizePts = avgPts - penalty[evaluator];
                 penalty[evaluator] = 0;
@@ -140,7 +139,6 @@ contract Contributor is Context {
         }
 
         eval.closeAt = uint128(block.timestamp);
-        eval.closeBlock = block.number;
 
         emit EvalSessionClosed(epoch_);
     }
