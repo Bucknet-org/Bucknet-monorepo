@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { existsSync, readFileSync, writeFileSync, mkdirSync, unlinkSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync, mkdirSync, unlinkSync, readdirSync } from 'fs';
 
 export const loadFile = (path: string): any => {
     if (existsSync(path)) {
@@ -28,4 +28,8 @@ export const removeFile = (path: string): void => {
     } catch (err) {
         console.error(err);
     }
+};
+
+export const dirLength = (dir: string): number => {
+    return readdirSync(dir).length;
 };

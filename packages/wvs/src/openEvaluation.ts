@@ -3,14 +3,14 @@ import { dirLength, loadFile, saveFile } from "./utils";
 import { processData } from "./dataProcessor";
 import { useContributorContract } from "./useContract";
 import slotsJson from "./jsons/slots.json"
-import { RawData } from "./types";
+import { EvaluationInfo, RawData } from "./types";
 
 async function openEvaluation() {
-    const PK = '0xaf595541ff791a067c6986e5495ea7a58c09f48c87ce5719510de72583c72886';
+    const PK = '';
     const txsDir = join(__dirname, "txs")
     const wvsDir = join(__dirname, 'wvs')
     const currentEpoch = dirLength(wvsDir)
-    const PoE = await processData(wvsDir, currentEpoch)
+    const poe = await processData(wvsDir, currentEpoch)
     const contract = useContributorContract(PK)
     const rawData = loadFile(join(wvsDir, `${currentEpoch.toString()}.json`));
 
@@ -25,17 +25,24 @@ async function openEvaluation() {
         }
     });
 
-    console.log("Poe: ", PoE)
+    console.log("Poe: ", poe)
     console.log("Slots: ", slots)
     console.log("NoWs: ", numOfWorks)
 
-    const gasEstimate = await contract.openEvalSession.estimateGas(PoE, slots, numOfWorks);
+    const gasEstimate = await contract.openEvalSession.estimateGas(poe, slots, numOfWorks);
     console.log(`Estimated Gas: ${gasEstimate.toString()}`);
 
-    const tx = await contract.openEvalSession(PoE, slots, numOfWorks, {gasLimit: gasEstimate * BigInt(120) / BigInt(100) , gasPrice: 5000000000 })
+    const tx = await contract.openEvalSession(poe, slots, numOfWorks, {gasLimit: gasEstimate * BigInt(120) / BigInt(100) , gasPrice: 5000000000 })
     tx.wait();
     console.log(tx.hash)
-    saveFile(join(txsDir, `${currentEpoch.toString()}.json`), tx.hash)
+
+    const detail: EvaluationInfo = {
+        poe: poe,
+        txHash: tx.hash,
+        sender: tx.from,
+    }
+
+    saveFile(join(txsDir, `${currentEpoch.toString()}.json`), detail)
 };
 
 openEvaluation().catch(console.error);
