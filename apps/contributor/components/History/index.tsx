@@ -11,39 +11,54 @@ import EvalHistory from './EvalHistory'
 import { useContributorContract } from '@/hooks/useContract'
 import { useWallet } from '@/context/WalletProvider'
 import { timeFormat } from '@/constants/dateFormat'
+import { useDispatch, useSelector } from 'react-redux'
+import slotsJson from '@/jsons/slots.json'
+import { getCurrentEpoch, getPtsHistory } from '@/selectors/appState.selector'
+import githubApi from '@/services/github/api'
+import { PtsHistoryType } from '@/store/reducers/app.reducer'
+import { addNewPtsHistory } from '@/store/actions/app.action'
 
 const History = () => {
   const [activeTab, setActiveTab] = React.useState('pts')
-  const contract = useContributorContract()
+  const contributorContract = useContributorContract()
   const {address} = useWallet()
+  const dispatch = useDispatch()
+  const ptsHistories = useSelector(getPtsHistory)
+  const currentEpoch = useSelector(getCurrentEpoch)
 
   const refetch = async () => {
-    if (!contract || !address) return
-    const numOfEpochs = await contract.epoch()
+    if (!contributorContract || !address || currentEpoch == 1) return
+    const currentHisLength = ptsHistories.length
+    if (currentHisLength < currentEpoch) {
+      const slot = await contributorContract.slotOfMember()
+      const slotsJsonObj: { [member: string]: number } = slotsJson;
+      const key = Object.keys(slotsJsonObj).find(key => slotsJsonObj[key] === Number(slot));
 
-    chrome.storage.local.get({ptsHistories: []}, async (result) => {
-      const ptsHistories = result.ptsHistories;
+      if (!key) {
+        console.error("No matching key found in slotsJsonObj");
+        return;
+      }
 
-      if (ptsHistories.length == 0) {
-        // fetch all
-        for (let i = 1; i < Number(numOfEpochs); ++i) {
-          const epochPts = await contract.getEpochPoints(address, i)
-          ptsHistories.push({time: new Date(Number(epochPts[0]) * 1000).toLocaleString("en-US", timeFormat).replace(',', ''), pts: Number(epochPts[1] / BigInt(10000))})
-        }
-      } else {
-        // fetch start latest epoch
-        const latestEpoch = ptsHistories.length + 1;
-        for (let i = latestEpoch; i < Number(numOfEpochs); ++i) {
-          const epochPts = await contract.getEpochPoints(address, i)
-          ptsHistories.push({time: new Date(Number(epochPts[0]) * 1000).toLocaleString("en-US", timeFormat).replace(',', ''), pts: Number(epochPts[1] / BigInt(10000)) })
+      for (let i = 1; i < currentEpoch - currentHisLength; i++) {
+        try {
+          const epochPts = await contributorContract.getPointsHistory(address, currentHisLength + i);
+          let wvs = await githubApi.wvs(i);
+          const wvsData = JSON.parse(wvs.data);
+
+          let ptsHistory: PtsHistoryType = {
+            epoch: currentHisLength + i,
+            timestamp: new Date(Number(epochPts[0]) * 1000).getTime(),
+            txHash: JSON.parse(wvs.data).txsData.txHash,
+            avgPoints: (epochPts[1] / BigInt(10000)).toString(),
+            valWorks: wvsData.wvs.filter((item: any) => item.member.toLowerCase() === key).flatMap((item: any) => Object.keys(item.works))
+          };
+
+            dispatch(addNewPtsHistory(ptsHistory));
+        } catch (error) {
+            console.error(`Error processing epoch ${i}:`, error);
         }
       }
-      chrome.storage.local.set({ptsHistories: ptsHistories}, () => {
-        chrome.storage.local.get('ptsHistories', (result) => {
-            console.log(result.ptsHistories)
-        });
-      })
-    });
+    }
   }
 
 

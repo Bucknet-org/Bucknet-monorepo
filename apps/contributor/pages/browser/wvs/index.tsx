@@ -1,4 +1,3 @@
-/// <reference types="chrome"/> 
 import React, { memo, useEffect, useState } from 'react'
 import { AppWarpper, BoxFlex, BoxFlexColumn, BoxFlexEnd, BoxFlexSpaceBetween } from '@/pages/styled'
 import githubApi from '@/services/github/api'
@@ -23,6 +22,8 @@ interface Member {
   works: any
   setPointObj: (obj: { [member in string]: number | undefined }) => void
   pointObj: { [member in string]: number | undefined }
+  wvsPoints: { [member in string]: {[work in string]: number | undefined} }
+  setWvsPoints: (obj: {[member in string]: {[work in string]: number | undefined}}) => void
 }
 
 interface Work {
@@ -32,6 +33,7 @@ interface Work {
 }
 
 const EvalScoring = ({ setPoint }: { setPoint: (point: number) => void }) => {
+  
   const [score, setScore] = useState<number | null>(null)
   const scores = [0, 1, 2, 3, 4, 5]
 
@@ -84,30 +86,47 @@ const RenderWork = ({ work, pow, setPoint }: Work) => {
   )
 }
 
-const RenderMember = ({ member, works, pointObj, setPointObj }: Member) => {
-  const [totalPoint, setTotalPoint] = useState(0)
+const RenderMember = ({ member, works, pointObj, setPointObj, wvsPoints, setWvsPoints }: Member) => {
+  const [workPoints, setWorkPoints] = useState<{ [work: string]: number }>({});
 
-  const setPoint = (point: number) => {
-    const newPoint = totalPoint + point
-    setTotalPoint(newPoint)
-  }
+  const setPoint = (work: string, point: number) => {
+    setWorkPoints(prev => {
+      const newPoints = {
+        ...prev,
+        [work]: (prev[work] || 0) + point
+      };
+
+      // Update workPoints state
+      setWvsPoints({
+        ...wvsPoints,
+        [member]: {
+          ...wvsPoints[member],
+          ...newPoints
+        }
+      });
+
+      return newPoints;
+    });
+  };
 
   useEffect(() => {
-    if (totalPoint > 0) {
+    const memberTotalPoints = Object.values(workPoints).reduce((sum, points) => sum + points, 0);
+    
+    if (memberTotalPoints > 0) {
       const newPointObj = {
         ...pointObj,
-        [member]: totalPoint,
-      }
-      setPointObj(newPointObj)
+        [member]: memberTotalPoints
+      };
+      setPointObj(newPointObj);
     }
 
     return () => {
       setPointObj({
         ...pointObj,
-        [member]: 0,
-      })
-    }
-  }, [totalPoint])
+        [member]: 0
+      });
+    };
+  }, [workPoints, member, pointObj, setPointObj, setWorkPoints]);
 
   return (
     <MemeberWrap pl={3} borderBottom={'1px solid white'}>
@@ -117,7 +136,7 @@ const RenderMember = ({ member, works, pointObj, setPointObj }: Member) => {
         </BoxFlex>
         <ContentContainer>
           {Object.keys(works).map((item: string, index: number) => {
-            return <RenderWork key={index} work={item} pow={works[item]} setPoint={setPoint} />
+            return <RenderWork key={index} work={item} pow={works[item]} setPoint={(point: number) => setPoint(item, point)} />
           })}
         </ContentContainer>
       </BoxFlex>
@@ -132,26 +151,15 @@ export default memo(function WVS() {
   const [pointObj, setPointObj] = useState<{
     [member in string]: number | undefined
   }>({})
+
+  const [wvsPoints, setWvsPoints] = useState<{
+    [member in string]: {[work: string]: number | undefined}
+  }>({})
+
   const contributorContract = useContributorContract()
   const accessManagerContract = useAccessManagerV2Contract()
   const { address } = useWallet()
   const [isContributor, setIsContributor] = useState(false)
-
-  useEffect(() => {
-    if (address) {
-      accessManagerContract
-        ?.hasRole(Roles.CONTRIBUTOR_ROLE, address)
-        .then((res: boolean) => {
-          console.log({ res })
-          setIsContributor(res)
-        })
-        .catch((err) => {
-          console.log(err)
-          console.error(err)
-          setIsContributor(false)
-        })
-    }
-  }, [accessManagerContract])
 
   const evaluate = async () => {
     try {
@@ -172,16 +180,35 @@ export default memo(function WVS() {
       await receipt.wait()
 
       let evalHistory: EvalHistoryType = {
-        epoch: wvs?.epoch,
+        epoch: wvs.epoch,
         timestamp: new Date().getTime(),
         txHash: receipt.hash,
-        wvs: wvs
+        wvs: wvsPoints
       }
+
+      console.log('eval history', evalHistory)
+
       dispatch(addNewEvalHistory(evalHistory))
     } catch (err) {
       console.log(err)
     }
   }
+
+  useEffect(() => {
+    if (address) {
+      accessManagerContract
+        ?.hasRole(Roles.CONTRIBUTOR_ROLE, address)
+        .then((res: boolean) => {
+          console.log({ res })
+          setIsContributor(res)
+        })
+        .catch((err) => {
+          console.log(err)
+          console.error(err)
+          setIsContributor(false)
+        })
+    }
+  }, [accessManagerContract])
 
   return (
     <AppContainer>
@@ -218,8 +245,10 @@ export default memo(function WVS() {
               key={index}
               member={item.member}
               works={item.works}
-              setPointObj={setPointObj}
               pointObj={pointObj}
+              setPointObj={setPointObj}
+              wvsPoints={wvsPoints}
+              setWvsPoints={setWvsPoints}
             />
           )
         })}
@@ -242,9 +271,9 @@ export default memo(function WVS() {
         
       </ContentWrap>
       <Stack flexDirection='row' gap={4} justifyContent='flex-end'>
+      {/* {isAdmin && <SubmitButton onClick={openEvalSession}>Open Evaluate Session</SubmitButton>} */}
       {isContributor && <SubmitButton onClick={evaluate}>Submit</SubmitButton>}
       </Stack>
-     
     </AppContainer>
   )
 })
