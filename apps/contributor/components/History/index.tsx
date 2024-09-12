@@ -34,7 +34,19 @@ const History = () => {
     if (!contributorContract || !address || currentEpoch == 1) return
     const currentHisLength = ptsHistories.length
     console.log('length of history', currentHisLength)
-    if (Number(currentHisLength) < Number(currentEpoch)) {
+    let epoch = await contributorContract?.epoch.staticCall()
+    if (epoch != currentEpoch) {
+      console.log('epoch', epoch)
+      dispatch(updateEpoch(Number(epoch)))
+      try {
+        let res = await githubApi.wvs(epoch)
+        console.log('WVS', JSON.parse(res.data))
+        dispatch(updateWVS(JSON.parse(res.data)))
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    if (Number(currentHisLength) < Number(epoch)) {
       const slot = await contributorContract.slotOfMember(address)
       const slotsJsonObj: { [member: string]: number } = slotsJson;
       const key = Object.keys(slotsJsonObj).find(key => slotsJsonObj[key] === Number(slot));
@@ -44,16 +56,19 @@ const History = () => {
         return;
       }
 
-      for (let i = 1; i < currentEpoch - currentHisLength; i++) {
+      for (let i = 1; i < Number(epoch) - Number(currentHisLength); i++) {
         try {
           const epochPts: any = await contributorContract.getPointsHistory(address, currentHisLength + i);
-          let wvs = await githubApi.wvs(currentHisLength + i) || {};
+          let wvs = await githubApi.wvs(currentHisLength + i);
           const wvsData = JSON.parse(wvs.data);
+          let txHashinWvs = await githubApi.wvs(currentHisLength + i + 1);
+          console.log('WVS i', currentHisLength + i + 1, JSON.parse(txHashinWvs.data))
+          const txHashinWvsData = JSON.parse(txHashinWvs.data);
 
           let ptsHistory: PtsHistoryType = {
-            epoch: currentHisLength + i + 1,
+            epoch: currentHisLength + i,
             timestamp: new Date(Number(epochPts[0]) * 1000).getTime(),
-            txHash: JSON.parse(wvs.data).txsData.txHash,
+            txHash: txHashinWvsData.txsData.txHash,
             avgPoints: (epochPts[1] / BigInt(10000)).toString(),
             valWorks: wvsData.wvs.filter((item: any) => item.member.toLowerCase() === key).flatMap((item: any) => Object.keys(item.works))
           };

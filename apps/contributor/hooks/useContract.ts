@@ -9,6 +9,10 @@ export const useContributorContract = (): ethers.Contract | null => {
     return signer ? new ethers.Contract(ContributorAddresses, ContributorAbi, signer) : null
 }
 
+export const useContributorContractStaticCall = (): ethers.Contract => {
+    return new ethers.Contract(ContributorAddresses, ContributorAbi)
+}
+
 export const useAccessManagerV2Contract = (): ethers.Contract | null => {
     const { signer } = useWallet()
     return signer ? new ethers.Contract(AccessManagerV2Addresses, AccessManagerV2Abi, signer) : null

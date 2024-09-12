@@ -1,13 +1,9 @@
 import Header from "@/components/Layout/Header";
 import { MESSAGE } from "@/constants/message";
 import { WalletProvider } from "@/context/WalletProvider";
-import { useContributorContract } from "@/hooks/useContract";
-import { getCurrentEpoch } from "@/selectors/appState.selector";
-import githubApi from "@/services/github/api";
-import { updateEpoch, updateWVS } from "@/store/actions/app.action";
 import configureStore from "@/store/store";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Provider, useSelector, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
 
 // const queryClient = new QueryClient()
 
@@ -17,7 +13,6 @@ interface AppProps {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
-  const contributorContract = useContributorContract()
   const [initState, setInitState] = useState<any>()
 
   const store = useMemo(() => {
@@ -30,24 +25,6 @@ export default function App({ Component, pageProps }: AppProps) {
       registration?.active?.postMessage(JSON.stringify(message))
     })
   }, [])
-
-  useEffect(() => {
-    (async () => {
-      try {
-        let epoch = await contributorContract?.epoch.staticCall()
-        let currentEpoch = store.getState()?.app.currentEpoch
-        console.log('epoch', epoch, currentEpoch)
-        if (epoch != currentEpoch) {
-          store.dispatch(updateEpoch(Number(epoch)))
-          let res = await githubApi.wvs(epoch)
-          console.log('WVS', JSON.parse(res.data))
-          store.dispatch(updateWVS(JSON.parse(res.data)))
-        }
-      } catch (error) {
-        
-      }
-    })()
-  }, [store])
 
   useEffect(() => {
     sendMessage({
