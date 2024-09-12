@@ -5,6 +5,7 @@ import { getEvalHistory } from '@/selectors/appState.selector'
 import { EvalHistoryType } from '@/store/reducers/app.reducer'
 import { formatTime, getStrTruncateMiddle } from '@/utils/function'
 import { Box, Container, Stack, styled, Typography } from '@mui/material'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -24,7 +25,7 @@ const EvalHistory = () => {
       <ListContainer>
         {evalHistory?.map((item: EvalHistoryType, index: number) => (
           <ListItem key={index} onClick={() => handleShowActivityDetail(item)}>
-            <TimeText>{item.timestamp}</TimeText>
+            <TimeText>{formatTime(item.timestamp)}</TimeText>
             <PointText>{getStrTruncateMiddle(item.txHash, 5)}</PointText>
           </ListItem>
         ))}
@@ -49,7 +50,9 @@ const EvalHistory = () => {
               </BoxFlexSpaceBetween>
               <BoxFlexSpaceBetween>
                 <Typography variant="caption">Tx Hash</Typography>
-                <Typography>{getStrTruncateMiddle(currentActivity?.txHash, 6)}</Typography>
+                <Link href={`https://testnet.bscscan.com/txn/${currentActivity?.txHash}`} target="_blank" style={{ textDecoration: 'none' }}>
+                  <Typography>{getStrTruncateMiddle(currentActivity?.txHash, 6)}</Typography>
+                </Link>
               </BoxFlexSpaceBetween>
             </BoxFlexColumn>
             <BoxFlexColumn>

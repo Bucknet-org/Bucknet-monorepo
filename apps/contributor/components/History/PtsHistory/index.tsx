@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import ModalCustom from '@/components/Custom/ModalCustom'
 import { useState } from 'react'
 import { BoxBorderBottom, BoxFlex, BoxFlexColumn, BoxFlexSpaceBetween } from '@/pages/styled'
+import Link from 'next/link'
 const PtsHistory = () => {
   const ptsHistory = useSelector(getPtsHistory)
   const [openActivityDetail, setOpenActivityDetail] = useState(false)
@@ -47,7 +48,9 @@ const PtsHistory = () => {
               </BoxFlexSpaceBetween>
               <BoxFlexSpaceBetween>
                 <Typography variant="caption">Tx Hash</Typography>
-                <Typography>{getStrTruncateMiddle(currentActivity?.txHash, 6)}</Typography>
+                <Link href={`https://testnet.bscscan.com/txn/${currentActivity?.txHash}`} target="_blank" style={{ textDecoration: 'none' }}>
+                  <Typography>{getStrTruncateMiddle(currentActivity?.txHash, 6)}</Typography>
+                </Link>
               </BoxFlexSpaceBetween>
               <BoxFlexSpaceBetween>
                 <Typography variant="caption">Avg. Point</Typography>
@@ -56,8 +59,8 @@ const PtsHistory = () => {
               <BoxFlexSpaceBetween>
                 <Typography variant="caption">Value Works</Typography>
                 <BoxFlexColumn sx={{ gap: '20px' }}>
-                  {currentActivity?.valWorks?.map((work: any) => {
-                    return <Typography variant="caption">{work}</Typography>
+                  {currentActivity?.valWorks?.map((work: any, index: number) => {
+                    return <Typography key={index} variant="caption">{work}</Typography>
                   })}
                 </BoxFlexColumn>
               </BoxFlexSpaceBetween>

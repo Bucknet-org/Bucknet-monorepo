@@ -12,6 +12,18 @@ export const expandView = (route: string = 'browser/home') => {
   })
 }
 
+export const openExplorer = (txHash: string, address?: string) => {
+  let url
+  
+  if (address) {
+    url = `https://testnet.bscscan.com/account/${address}`
+  } else {
+    url = `https://testnet.bscscan.com/txn/${txHash}`
+  }
+
+  return window.open(url, '_blank', 'noopener,noreferrer')
+}
+
 export const connectMetamask = () => {
   navigator.serviceWorker.ready.then((registration) => {
     registration?.active?.postMessage(
@@ -33,7 +45,6 @@ export const getStrTruncateMiddle = (str: string, numChars: number) => {
   const end = str.slice(-numChars)
   return `${start}....${end}`
 }
-
 
 export const formatTime = (timestamp: number) => {
   return new Date(timestamp).toLocaleString("us-US", timeFormat)
