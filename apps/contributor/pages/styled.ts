@@ -52,6 +52,12 @@ export const BoxFlexColumn = styled(Box)(({ theme }) => ({
   paddingLeft: '12px',
 }))
 
+export const BoxBorderBottom = styled(Box)(({ theme }) => ({
+  width: '100%',
+  padding: '20px 0',
+  border: '1px solid transparent',
+}))
+
 export const WrapperHeader = styled(Box)(({}) => ({
   position: 'sticky',
   top: 0,
