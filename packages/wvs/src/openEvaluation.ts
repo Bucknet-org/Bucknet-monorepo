@@ -7,7 +7,7 @@ import { RawData, TxsData } from "./types";
 
 async function openEvaluation() {
     const PK = process.env.PRIVATE_KEY || '';
-    const wvsDir = join(__dirname, 'wvs')
+    const wvsDir = join(__dirname, 'test')
     const currentEpoch = dirLength(wvsDir)
     const poe = await processData(wvsDir, currentEpoch)
     const contract = useContributorContract(PK)
