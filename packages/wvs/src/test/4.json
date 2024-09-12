@@ -1,0 +1,44 @@
+{
+  "epoch": 4,
+  "timestamp": "Sep 11 2024",
+  "wvs": [
+    {
+      "member": "Bekhnam",
+      "works": {
+        "Contributor Model Doc": "https://docs.google.com/document/d/1eDWDm8K20MKzjVuNFgZ5KNTBy0_LTETu/edit",
+        "Smart Contract: Contributor Codebase": "https://github.com/Bekh-nam/Bucknet/tree/feat/smart-contract"
+      }
+    },
+    {
+      "member": "HieuVo",
+      "works": {}
+    },
+    {
+      "member": "TuanHoang",
+      "works": {
+        "Wallet Provider": "https://github.com/Bekh-nam/Bucknet/tree/feat/contributor"
+      }
+    },
+    {
+      "member": "StevenTran",
+      "works": {
+        "Extension: Refactor UI": "https://github.com/Bekh-nam/Bucknet/tree/steven/ui_contributor"
+      }
+    },
+    {
+      "member": "PhongTo",
+      "works": {}
+    },
+    {
+      "member": "Serein",
+      "works": {
+        "Design UI/UX for extension contributor score": "https://www.figma.com/design/IRhDxW1OiBztKOapVEHizs/Bucknet?node-id=0-1&node-type=CANVAS&t=aGKj2Blt7rL076fb-0"
+      }
+    }
+  ],
+  "txsData": {
+    "poe": "0xa8a6aee33ea6f76c2b1689a5019b6cdfd9d22ed95aabd35335337a15d013a8c4",
+    "txHash": "0xc4e2ab1ab09b786c4decc343c29c654502bd10062cb797aff29a3adfadbc4669",
+    "sender": "0xeaB6e3625Bf1c78d926cD82a243492c51BE1A7d7"
+  }
+}
