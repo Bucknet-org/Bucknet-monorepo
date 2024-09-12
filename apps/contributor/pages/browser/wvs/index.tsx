@@ -206,7 +206,7 @@ export default memo(function WVS() {
           setIsContributor(false)
         })
     }
-  }, [])
+  }, [address, accessManagerContract])
 
   return (
     <AppContainer>

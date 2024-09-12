@@ -30,24 +30,11 @@ const History = () => {
 
   const refetch = async () => {
     console.log('state', state)
-    
-    let epoch = Number(await contributorContract?.epoch()) || 2
-    if (epoch != currentEpoch) {
-      console.log('epoch', typeof(epoch))
-      dispatch(updateEpoch(epoch))
-      try {
-        let res = await githubApi.wvs(epoch)
-        console.log('WVS', JSON.parse(res.data))
-        dispatch(updateWVS(JSON.parse(res.data)))
-      } catch (error) {
-        console.log(error)
-      }
-    }
 
-    if (!contributorContract || !address || epoch == 1) return
+    if (!contributorContract || !address || currentEpoch == 1) return
     const currentHisLength = ptsHistories.length
     console.log('length of history', currentHisLength)
-    if (Number(currentHisLength) < Number(epoch)) {
+    if (Number(currentHisLength) < Number(currentEpoch)) {
       const slot = await contributorContract.slotOfMember(address)
       const slotsJsonObj: { [member: string]: number } = slotsJson;
       const key = Object.keys(slotsJsonObj).find(key => slotsJsonObj[key] === Number(slot));
@@ -64,7 +51,7 @@ const History = () => {
           const wvsData = JSON.parse(wvs.data);
 
           let ptsHistory: PtsHistoryType = {
-            epoch: currentHisLength + i,
+            epoch: currentHisLength + i + 1,
             timestamp: new Date(Number(epochPts[0]) * 1000).getTime(),
             txHash: JSON.parse(wvs.data).txsData.txHash,
             avgPoints: (epochPts[1] / BigInt(10000)).toString(),

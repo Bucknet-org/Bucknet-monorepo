@@ -32,6 +32,24 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
 
   useEffect(() => {
+    (async () => {
+      try {
+        let epoch = await contributorContract?.epoch.staticCall()
+        let currentEpoch = store.getState()?.app.currentEpoch
+        console.log('epoch', epoch, currentEpoch)
+        if (epoch != currentEpoch) {
+          store.dispatch(updateEpoch(Number(epoch)))
+          let res = await githubApi.wvs(epoch)
+          console.log('WVS', JSON.parse(res.data))
+          store.dispatch(updateWVS(JSON.parse(res.data)))
+        }
+      } catch (error) {
+        
+      }
+    })()
+  }, [store])
+
+  useEffect(() => {
     sendMessage({
       method: MESSAGE.GET_INITIALIZE_DATA,
     })

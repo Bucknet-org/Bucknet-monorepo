@@ -23,7 +23,7 @@ async function requestRetry(route: any, parameters: any) {
 
 const githubApi = {
   wvs(epoch: number): Promise<any> {
-    const path = `packages/wvs/src/wvs/${epoch}.json`
+    const path = `packages/wvs/src/test/${epoch}.json`
     console.log('path', path)
     return requestRetry(
       'GET /repos/{owner}/{repo}/contents/{path}',
