@@ -1,0 +1,47 @@
+{
+  "epoch": 2,
+  "timestamp": "Sep 14 2024",
+  "wvs": [
+    {
+      "member": "Bekhnam",
+      "works": {
+        "Local storage and redux store": "https://github.com/Bekh-nam/Bucknet/commit/1453cfc2004a35befc64b6d6f51eac77111cba60",
+        "Detail pts. and eval. history: UI and Dataflow": "https://github.com/Bekh-nam/Bucknet/commits/feat/contributor"
+      }
+    },
+    {
+      "member": "HieuVo",
+      "works": {
+        "Process WVS flow": "https://github.com/Bekh-nam/Bucknet/commit/af03c885244cc51b92728bf5c9824ae639e92c5d"
+      }
+    },
+    {
+      "member": "TuanHoang",
+      "works": {
+        "Repair WVS": "https://github.com/Bekh-nam/Bucknet/tree/feat/wvs",
+        "History": "https://github.com/Bekh-nam/Bucknet/tree/contributor/history"
+      }
+    },
+    {
+      "member": "StevenTran",
+      "works": {
+        "Refactor UI": "https://github.com/Bekh-nam/Bucknet/pull/5"
+      }
+    },
+    {
+      "member": "PhongTo",
+      "works": {}
+    },
+    {
+      "member": "Serein",
+      "works": {
+        "Manage timeline & testing": "https://docs.google.com/spreadsheets/d/1XB63TTWT2QH00_TNig3VmlhEgZhjpu2f93JKT2Ro290/edit?gid=1209758576#gid=1209758576"
+      }
+    }
+  ],
+  "txsData": {
+    "poe": "0x19e2094b631e5cc54ac80997efcfa706562029ee7fc9082528e94a24810286f1",
+    "txHash": "0xbb9194749ac78701c87a31509fee4ee91f53749810b0acfa6c01df9836d4008c",
+    "sender": "0xeaB6e3625Bf1c78d926cD82a243492c51BE1A7d7"
+  }
+}
