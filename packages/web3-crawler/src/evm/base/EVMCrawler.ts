@@ -15,12 +15,14 @@ export class EVMCrawler {
 
     private switchProvider(): void {
         this.currentProviderIndex = (this.currentProviderIndex + 1) % this.providers.length;
-        console.log(`Switched to provider: ${this.providers[this.currentProviderIndex]}`);
+        console.log(`Switched to provider: ${this.getProvider()._getConnection().url}`);
     }
 
     // Fetch transactions from a specific block number with retry logic on failure
     async fetchTransactionsFromBlock(blockNumber: number): Promise<TransactionResponse[]> {
         try {
+            console.log(`Process block: ${blockNumber}`);
+
             const provider = this.getProvider();
             
             const block = await provider.getBlock(blockNumber, true)
@@ -53,19 +55,19 @@ export class EVMCrawler {
         this.getProvider().on('block', async (blockNumber) => {
             console.log(`New block received: ${blockNumber}`);
             const transactions = await this.fetchTransactionsFromBlock(blockNumber);
-            console.log(transactions)
+            console.log(transactions.length)
         });
     }
 
     async fetchBlocksInRange(startBlock: number, endBlock: number): Promise<void> {
         for (let i = startBlock; i <= endBlock; i++) {
             const transactions = await this.fetchTransactionsFromBlock(i);
-            console.log(transactions)
+            console.log(transactions.length)
         }
     }
 
     private isRecoverableError(error: any): boolean {
         const message = error.message.toLowerCase();
-        return message.includes('rate limit') || message.includes('timeout') || message.includes('connection');
+        return message.includes('limit') || message.includes('exceeded') || message.includes('timeout') || message.includes('connection');
     }
 }
