@@ -1,4 +1,3 @@
-import { StoreEnhancer } from 'redux'
 import { configureStore as baseConfigureStore } from '@reduxjs/toolkit'
 import rootReducer from './reducers/root.reducer'
 

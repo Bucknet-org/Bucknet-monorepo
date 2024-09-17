@@ -26,21 +26,16 @@ const History = () => {
   const state = useSelector(getState)
   const ptsHistories = useSelector(getPtsHistory)
   const currentEpoch = useSelector(getCurrentEpoch)
-  console.log('epoch in history', currentEpoch)
 
   const refetch = async () => {
-    console.log('state', state)
 
     if (!contributorContract || !address || currentEpoch == 1) return
     const currentHisLength = ptsHistories.length
-    console.log('length of history', currentHisLength)
     let epoch = await contributorContract?.epoch.staticCall()
     if (epoch != currentEpoch) {
-      console.log('epoch', epoch)
       dispatch(updateEpoch(Number(epoch)))
       try {
         let res = await githubApi.wvs(epoch)
-        console.log('WVS', JSON.parse(res.data))
         dispatch(updateWVS(JSON.parse(res.data)))
       } catch (error) {
         console.log(error)
@@ -62,7 +57,6 @@ const History = () => {
           let wvs = await githubApi.wvs(currentHisLength + i);
           const wvsData = JSON.parse(wvs.data);
           let txHashinWvs = await githubApi.wvs(currentHisLength + i + 1);
-          console.log('WVS i', currentHisLength + i + 1, JSON.parse(txHashinWvs.data))
           const txHashinWvsData = JSON.parse(txHashinWvs.data);
 
           let ptsHistory: PtsHistoryType = {
@@ -73,8 +67,6 @@ const History = () => {
             valWorks: wvsData.wvs.filter((item: any) => item.member.toLowerCase() === key).flatMap((item: any) => Object.keys(item.works))
           };
 
-          console.log('pts history', ptsHistory)
-
           dispatch(addNewPtsHistory(ptsHistory));
         } catch (error) {
             console.error(`Error processing epoch ${i}:`, error);
@@ -82,7 +74,6 @@ const History = () => {
       }
     }
   }
-
 
   return (
     <Box sx={{ width: '100%', position: 'relative' }}>

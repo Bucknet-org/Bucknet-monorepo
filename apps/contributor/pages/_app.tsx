@@ -1,4 +1,4 @@
-import Header from "@/components/Layout/Header";
+import StorageUpdater from "@/components/StorageUpdater";
 import { MESSAGE } from "@/constants/message";
 import { WalletProvider } from "@/context/WalletProvider";
 import configureStore from "@/store/store";
@@ -61,7 +61,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <WalletProvider>
       <Provider store={store}>
-        {/* <Header/> */}
+        <StorageUpdater/>
         <Component {...pageProps} />
       </Provider>
     </WalletProvider>
