@@ -15,14 +15,14 @@ const StorageUpdater = () => {
   const state = useSelector(getState)
   const ptsHistories = useSelector(getPtsHistory)
   const currentEpoch = useSelector(getCurrentEpoch)
-  console.log('epoch in history', currentEpoch)
+  console.log('current epoch', currentEpoch)
   
   const refetch = async () => {
     console.log('state>>>', state)
 
     if (!contributorContract || !address) return
-    const currentHisLength = ptsHistories.length
-    console.log('length of history', currentHisLength)
+    // const currentHisLength = ptsHistories.length
+    // console.log('length of history', currentHisLength)
     let epoch = await contributorContract?.epoch.staticCall()
     if (epoch != currentEpoch) {
       console.log('epoch', epoch)
@@ -35,41 +35,41 @@ const StorageUpdater = () => {
         console.log(error)
       }
     }
-    if (Number(currentHisLength) < Number(epoch)) {
-      const slot = await contributorContract.slotOfMember(address)
-      const slotsJsonObj: { [member: string]: number } = slotsJson;
-      const key = Object.keys(slotsJsonObj).find(key => slotsJsonObj[key] === Number(slot));
+    // if (Number(currentHisLength) < Number(epoch)) {
+    //   const slot = await contributorContract.slotOfMember(address)
+    //   const slotsJsonObj: { [member: string]: number } = slotsJson;
+    //   const key = Object.keys(slotsJsonObj).find(key => slotsJsonObj[key] === Number(slot));
 
-      if (!key) {
-        console.error("No matching key found in slotsJsonObj");
-        return;
-      }
+    //   if (!key) {
+    //     console.error("No matching key found in slotsJsonObj");
+    //     return;
+    //   }
 
-      for (let i = 1; i < Number(epoch) - Number(currentHisLength); i++) {
-        try {
-          const epochPts: any = await contributorContract.getPointsHistory(address, currentHisLength + i);
-          let wvs = await githubApi.wvs(currentHisLength + i);
-          const wvsData = JSON.parse(wvs.data);
-          let txHashinWvs = await githubApi.wvs(currentHisLength + i + 1);
-          console.log('WVS i', currentHisLength + i + 1, JSON.parse(txHashinWvs.data))
-          const txHashinWvsData = JSON.parse(txHashinWvs.data);
+    //   for (let i = 1; i < Number(epoch) - Number(currentHisLength); i++) {
+    //     try {
+    //       const epochPts: any = await contributorContract.getPointsHistory(address, currentHisLength + i);
+    //       let wvs = await githubApi.wvs(currentHisLength + i);
+    //       const wvsData = JSON.parse(wvs.data);
+    //       let txHashinWvs = await githubApi.wvs(currentHisLength + i + 1);
+    //       console.log('WVS i', currentHisLength + i + 1, JSON.parse(txHashinWvs.data))
+    //       const txHashinWvsData = JSON.parse(txHashinWvs.data);
 
-          let ptsHistory: PtsHistoryType = {
-            epoch: currentHisLength + i,
-            timestamp: new Date(Number(epochPts[0]) * 1000).getTime(),
-            txHash: txHashinWvsData.txsData.txHash,
-            avgPoints: (epochPts[1] / BigInt(10000)).toString(),
-            valWorks: wvsData.wvs.filter((item: any) => item.member.toLowerCase() === key).flatMap((item: any) => Object.keys(item.works))
-          };
+    //       let ptsHistory: PtsHistoryType = {
+    //         epoch: currentHisLength + i,
+    //         timestamp: new Date(Number(epochPts[0]) * 1000).getTime(),
+    //         txHash: txHashinWvsData.txsData.txHash,
+    //         avgPoints: (epochPts[1] / BigInt(10000)).toString(),
+    //         valWorks: wvsData.wvs.filter((item: any) => item.member.toLowerCase() === key).flatMap((item: any) => Object.keys(item.works))
+    //       };
 
-          console.log('pts history', ptsHistory)
+    //       console.log('pts history', ptsHistory)
 
-          dispatch(addNewPtsHistory(ptsHistory));
-        } catch (error) {
-            console.error(`Error processing epoch ${i}:`, error);
-        }
-      }
-    }
+    //       dispatch(addNewPtsHistory(ptsHistory));
+    //     } catch (error) {
+    //         console.error(`Error processing epoch ${i}:`, error);
+    //     }
+    //   }
+    // }
   }
 
   useEffect(() => {

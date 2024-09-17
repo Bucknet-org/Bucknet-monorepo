@@ -7,7 +7,7 @@ import { useWallet } from '@/context/WalletProvider'
 import { useRouter } from 'next/router'
 
 const Point = () => {
-  const [point, setPoint] = useState(0)
+  const [point, setPoint] = useState<string>('0')
   const contract = useContributorContract()
   const {address} = useWallet()
   const router = useRouter()
@@ -17,7 +17,7 @@ const Point = () => {
       contract?.contribPts.staticCall(address)
       .then(res => {
         console.log(res)
-        setPoint(Number(res / BigInt(10000)))
+        setPoint((Number(res) / Number(10000)).toFixed(2))
       })
       .catch(err => {
         console.log(err)

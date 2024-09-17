@@ -31,17 +31,17 @@ const History = () => {
 
     if (!contributorContract || !address || currentEpoch == 1) return
     const currentHisLength = ptsHistories.length
-    let epoch = await contributorContract?.epoch.staticCall()
-    if (epoch != currentEpoch) {
-      dispatch(updateEpoch(Number(epoch)))
-      try {
-        let res = await githubApi.wvs(epoch)
-        dispatch(updateWVS(JSON.parse(res.data)))
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    if (Number(currentHisLength) < Number(epoch)) {
+    // let epoch = await contributorContract?.epoch.staticCall()
+    // if (epoch != currentEpoch) {
+    //   dispatch(updateEpoch(Number(epoch)))
+    //   try {
+    //     let res = await githubApi.wvs(epoch)
+    //     dispatch(updateWVS(JSON.parse(res.data)))
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // }
+    if (Number(currentHisLength) < Number(currentEpoch)) {
       const slot = await contributorContract.slotOfMember(address)
       const slotsJsonObj: { [member: string]: number } = slotsJson;
       const key = Object.keys(slotsJsonObj).find(key => slotsJsonObj[key] === Number(slot));
@@ -51,7 +51,7 @@ const History = () => {
         return;
       }
 
-      for (let i = 1; i < Number(epoch) - Number(currentHisLength); i++) {
+      for (let i = 1; i < Number(currentEpoch) - Number(currentHisLength); i++) {
         try {
           const epochPts: any = await contributorContract.getPointsHistory(address, currentHisLength + i);
           let wvs = await githubApi.wvs(currentHisLength + i);
@@ -63,7 +63,7 @@ const History = () => {
             epoch: currentHisLength + i,
             timestamp: new Date(Number(epochPts[0]) * 1000).getTime(),
             txHash: txHashinWvsData.txsData.txHash,
-            avgPoints: (epochPts[1] / BigInt(10000)).toString(),
+            avgPoints: (Number(epochPts[1]) / Number(10000)).toFixed(2),
             valWorks: wvsData.wvs.filter((item: any) => item.member.toLowerCase() === key).flatMap((item: any) => Object.keys(item.works))
           };
 
