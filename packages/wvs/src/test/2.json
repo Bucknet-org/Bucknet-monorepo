@@ -1,20 +1,13 @@
 {
-  "epoch": 1,
-  "timestamp": "Sep 6 2024",
+  "epoch": 2,
+  "timestamp": "Sep 11 2024",
   "wvs": [
     {
       "member": "Bekhnam",
       "works": {
         "Contributor Model Doc": "https://docs.google.com/document/d/1eDWDm8K20MKzjVuNFgZ5KNTBy0_LTETu/edit",
         "Smart Contract: Contributor Codebase": "https://github.com/Bekh-nam/Bucknet/tree/feat/smart-contract",
-        "Extension: Config Package Build and Connect Wallet to Extension": "https://github.com/Bekh-nam/Bucknet/tree/feat/contributor",
-        "Extension: Github REST API and store": "https://github.com/Bekh-nam/Bucknet/tree/feat/contributor",
-        "Research: Credit Score and Social Credit Score": "https://docs.google.com/document/d/1YN8CLt-vKlZR__rypYRGwtAkK5wWEiuQ/edit?usp=drive_link",
-        "Research: Modular Architecture": "https://docs.google.com/document/d/1wCrWPYNxQfOJLe7j2j5_b7j8AYeUoMkT/edit?usp=drive_link",
-        "Research: Token Bound for Proof of Everything": "https://docs.google.com/document/d/1jaybpxXliZBM1k5EMXX-h--GS3BugroN/edit?usp=drive_link",
-        "TRs - Architecture Design": "https://docs.google.com/document/d/1Tih8XeXi0YBcUYvgVGouiqXNATRzL928/edit?usp=drive_link",
-        "Software development lifecycle (SDLC)": "https://docs.google.com/document/d/15L5HQyHUt-pO5Cgpgq5a1n9FP8X3PNoF/edit?usp=drive_link",
-        "Packages: proof-generator and wvs": "https://github.com/Bekh-nam/Bucknet/tree/feat/wvs"
+        "Extension: Config Package Build and Connect Wallet to Extension": "https://github.com/Bekh-nam/Bucknet/tree/feat/contributor"
       }
     },
     {
@@ -47,8 +40,8 @@
     }
   ],
   "txsData": {
-    "poe": "0x7a9bb8152761d42a7c631870b8e85a25296f8c67a1ddfb3a13ce9013fbda1d0c",
-    "txHash": "0x63d0e8d345accb8217dd7e8f2766f147111f8c39d5f68de845a8054e157b4a1b",
+    "poe": "0x6de5ce17222c6fd7cbcad08f48c0e432a35a55a59d371c177aaf7156c2f43ee3",
+    "txHash": "0x2698b43c2d9a15e9c59e612f247f0d48787038724b3157743fdac85d4d3d8f18",
     "sender": "0xeaB6e3625Bf1c78d926cD82a243492c51BE1A7d7"
   }
 }

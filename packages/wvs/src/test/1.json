@@ -1,6 +1,6 @@
 {
   "epoch": 1,
-  "timestamp": "Sep 6 2024",
+  "timestamp": "Sep 11 2024",
   "wvs": [
     {
       "member": "Bekhnam",
@@ -48,7 +48,7 @@
   ],
   "txsData": {
     "poe": "0x7a9bb8152761d42a7c631870b8e85a25296f8c67a1ddfb3a13ce9013fbda1d0c",
-    "txHash": "0x63d0e8d345accb8217dd7e8f2766f147111f8c39d5f68de845a8054e157b4a1b",
+    "txHash": "0x3905529fb407a4f5aa325a087a039509b7dc7f2f7b4166d9774029ebeb8fecd5",
     "sender": "0xeaB6e3625Bf1c78d926cD82a243492c51BE1A7d7"
   }
 }
