@@ -1,5 +1,5 @@
 // Setup: npm install alchemy-sdk
-import { Alchemy, AlchemyConfig, AssetTransfersWithMetadataResponse } from "alchemy-sdk";
+import { Alchemy, AlchemyConfig, TokenBalancesResponse, AssetTransfersWithMetadataResponse, OwnedBaseNftsResponse, GetBaseNftsForOwnerOptions } from "alchemy-sdk";
 
 export class AlchemyCrawler {
     private alchemy: Alchemy
@@ -8,13 +8,20 @@ export class AlchemyCrawler {
         this.alchemy = new Alchemy(config)
     }
 
-    async fetchHistory(this: any, fromBlock: number, fromAddress: string): Promise<AssetTransfersWithMetadataResponse> {
-        const response = await this.alchemy.core.getAssetTransfers({
+    async fetchTransferHistories(this: any, fromBlock: number, fromAddressOrName: string): Promise<AssetTransfersWithMetadataResponse> {
+        return await this.alchemy.core.getAssetTransfers({
             fromBlock: `0x${fromBlock.toString(16)}`,
-            fromAddress: fromAddress,
-            excludeZeroValue: true,
+            fromAddress: fromAddressOrName,
+            excludeZeroValue: false,
             category: ["external", "internal", "erc20", "erc721", "erc1155", "specialnft"]
         })
-        return response;
+    }
+
+    async fetchERC20Balances(this: any, fromAddressOrName: string): Promise<TokenBalancesResponse> {
+        return await this.alchemy.core.getTokenBalances(fromAddressOrName)
+    }
+
+    fetchNFTBalances(this: any, fromAddressOrName: string, options?: GetBaseNftsForOwnerOptions): Promise<OwnedBaseNftsResponse> {
+        return this.alchemy.nft.getNftsForOwner(fromAddressOrName, options)
     }
 }
