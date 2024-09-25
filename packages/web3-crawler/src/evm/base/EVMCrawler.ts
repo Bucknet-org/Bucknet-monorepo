@@ -18,7 +18,6 @@ export class EVMCrawler {
         console.log(`Switched to provider: ${this.getProvider()._getConnection().url}`);
     }
 
-    // Fetch transactions from a specific block number with retry logic on failure
     async fetchTransactionsFromBlock(blockNumber: number): Promise<TransactionResponse[]> {
         try {
             console.log(`Process block: ${blockNumber}`);
@@ -26,7 +25,7 @@ export class EVMCrawler {
             const provider = this.getProvider();
             
             const block = await provider.getBlock(blockNumber, true)
-            
+
             if (!block) throw Error(`Failed to get block at ${blockNumber}`)
             
             const txs: TransactionResponse[] = []
@@ -59,11 +58,13 @@ export class EVMCrawler {
         });
     }
 
-    async fetchBlocksInRange(startBlock: number, endBlock: number): Promise<void> {
+    async fetchBlocksInRange(startBlock: number, endBlock: number): Promise<{[block: string]: TransactionResponse[]}> {
+        const txs: {[block: string]: TransactionResponse[]} = {}
         for (let i = startBlock; i <= endBlock; i++) {
             const transactions = await this.fetchTransactionsFromBlock(i);
-            console.log(transactions.length)
+            txs[`${i.toString()}`] = transactions
         }
+        return txs;
     }
 
     private isRecoverableError(error: any): boolean {
