@@ -28,8 +28,8 @@ const githubApi = {
     return requestRetry(
       'GET /repos/{owner}/{repo}/contents/{path}',
       {
-        owner: 'Bekh-nam',
-        repo: 'Bucknet',
+        owner: 'Bucknet-org',
+        repo: 'Bucknet-monorepo',
         path: path,
         accept: 'application/vnd.github.raw+json',
         mediaType: {

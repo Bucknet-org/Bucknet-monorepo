@@ -29,7 +29,7 @@ const StorageUpdater = () => {
       dispatch(updateEpoch(Number(epoch)))
       try {
         let res = await githubApi.wvs(epoch)
-        console.log('WVS', JSON.parse(res.data))
+        console.log('WVS', res)
         dispatch(updateWVS(JSON.parse(res.data)))
       } catch (error) {
         console.log(error)
