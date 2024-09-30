@@ -1,9 +1,6 @@
 {
     "bekhnam": 0,
-    "hieuvo": 1,
-    "tuanhoang": 2,
-    "steventran": 3,
-    "phongto": 4,
-    "serein": 5,
-    "nathan": 6
+    "tuanhoang": 1,
+    "serein": 2,
+    "nathan": 3
 } 
