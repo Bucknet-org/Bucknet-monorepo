@@ -1,0 +1,34 @@
+{
+  "epoch": 4,
+  "timestamp": "Sep 30 2024",
+  "wvs": [
+    {
+      "member": "Bekhnam",
+      "works": {
+        "Consensus: PoR for A Trustless Reputation System": "https://docs.google.com/document/d/1yBZa2dDuwSCZb_2Qca31ephpK8LsZcj_/edit",
+        "Business and Governance Model": "https://docs.google.com/document/d/1emQYMM-GrcoAdz5PGMfHx2pSbtBDtpdo/edit"
+      }
+    },
+    {
+      "member": "TuanHoang",
+      "works": {
+        "Refactor crawler, add sample": "https://github.com/Bekh-nam/Bucknet/tree/feat/web3-crawler"
+      }
+    },
+    {
+      "member": "Serein",
+      "works": {
+        "UI Bucknet": "https://www.figma.com/design/IRhDxW1OiBztKOapVEHizs/Bucknet?node-id=202-2"
+      }
+    },
+    {
+      "member": "Nathan",
+      "works": {}
+    }
+  ],
+  "txsData": {
+    "poe": "0x5d22bda87bfcd85bb04bf2daf070ee963059aa241813b054a76b41d7f29e4762",
+    "txHash": "0x6731aa2551ed2249caefa71c089c132a2e5524743f8a4726c747feba169afb3c",
+    "sender": "0xeaB6e3625Bf1c78d926cD82a243492c51BE1A7d7"
+  }
+}

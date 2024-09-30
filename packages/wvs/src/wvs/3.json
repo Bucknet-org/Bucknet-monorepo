@@ -1,0 +1,50 @@
+{
+  "epoch": 3,
+  "timestamp": "Sep 21 2024",
+  "wvs": [
+    {
+      "member": "Bekhnam",
+      "works": {
+        "Smart Contract: ERC7231": "https://github.com/Bekh-nam/Bucknet/commit/5b269e1bb40e27b49bc9ad00ef264b3c826b5ca1",
+        "Research Web3 Lending": "https://docs.google.com/document/d/1UOM_ZtP3dU2oMykq2YHYSCVpGy3UmEBc/edit?usp=drive_link&ouid=113431575116777349551&rtpof=true&sd=true"
+      }
+    },
+    {
+      "member": "HieuVo",
+      "works": {
+        "Fix UI Storage Flow": "https://github.com/Bekh-nam/Bucknet/commit/ebcd3c5eb63ebb8f528f79a534b5eb380c305738"
+      }
+    },
+    {
+      "member": "TuanHoang",
+      "works": {
+        "Base EVM Crawler": "https://github.com/Bekh-nam/Bucknet/commit/9cb839ef6926f3fd35786216874fe1dca95749a2"
+      }
+    },
+    {
+      "member": "StevenTran",
+      "works": {}
+    },
+    {
+      "member": "PhongTo",
+      "works": {}
+    },
+    {
+      "member": "Serein",
+      "works": {
+        "FICO rule data & Trusting social feature": "https://app.diagrams.net/#G15J_8AitGBTpjaWfgK50tyMreBzlfFAV4#%7B%22pageId%22%3A%22C5RBs43oDa-KdzZeNtuy%22%7D"
+      }
+    },
+    {
+      "member": "Nathan",
+      "works": {
+        "TR Score Idealization": "https://hackmd.io/@UyvPdE1OTT2ztf54Ew2zHg/SJxdnJjpC"
+      }
+    }
+  ],
+  "txsData": {
+    "poe": "0x069a2797ec45fd88a668e473aeef7518d13e9349a97d48608a8b728be5fe1cea",
+    "txHash": "0x39583e745620d239b8eb39466a0c9252bbaa9e6c21a5601c8f73098c515bd3f2",
+    "sender": "0xeaB6e3625Bf1c78d926cD82a243492c51BE1A7d7"
+  }
+}
