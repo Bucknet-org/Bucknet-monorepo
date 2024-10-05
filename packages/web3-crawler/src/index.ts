@@ -31,7 +31,9 @@ const filterSample = (path: string, filterAddress: string): TransactionResponse[
     const res = await crawler.fetchBlocksInRange(20824880, 20824890);
     saveFile(join(testDir, "test.json"), res);
 
-    const filterRes = filterSample(join(testDir, "test.json"), "0xA9a01bDB8b9B600F321c1a70CcE9BB9D756C724f");
+    const filterAddress = "0xA9a01bDB8b9B600F321c1a70CcE9BB9D756C724f"
+    const filterRes = filterSample(join(testDir, "test.json"), filterAddress);
+    saveFile(join(testDir, `${filterAddress}.json`), filterRes);
     console.log("Txs match length: ", filterRes.length)
 })();
 

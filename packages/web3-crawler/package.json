@@ -35,6 +35,7 @@
         "alchemy-sdk": "^3.4.1",
         "dotenv": "^16.4.5",
         "ethereumjs-util": "^7.1.5",
-        "ethers": "^6.13.2"
+        "ethers": "^6.13.2",
+        "tsx": "^4.16.3"
     }
 }
